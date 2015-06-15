@@ -1,9 +1,11 @@
 <?php
 
-
 $parsed_data[$key]['width'] = $value['width'];
 $parsed_data[$key]['width_unit'] = $value['width_unit'];
 $parsed_data[$key]['label'] = $value['label'];
+$parsed_data[$key]['field_type'] = $value['field_type'];
+$parsed_data[$key]['image_size_w'] = $value['image_size_w'];
+$parsed_data[$key]['image_size_h'] = $value['image_size_h'];
 
 
 if($key == 'date'){
@@ -13,7 +15,7 @@ if(($key == 'title')||($key == 'title-1')){
 	$parsed_data[$key]['url'] = get_permalink($the_query->post->ID);
 	$parsed_data[$key]['value'] = get_the_title();
 }
-if($key == 'excerpt'){	
+if($key == 'column-excerpt'){	
 	$parsed_data[$key]['value'] = $the_query->post->post_excerpt;
 }
 if($key == 'column-slug'){
@@ -37,6 +39,12 @@ if(($key == 'column-meta')||($key =='column-meta-1')||($key =='column-meta-2')||
 		$location = get_post_meta( $the_query->post->ID , $field , true);
 		$parsed_data[$key]['value'] = $location['address'];
 	}
+	if($value['field_type']=='image'){
+		$thumb = wp_get_attachment_image_src( get_post_meta( $the_query->post->ID , $field , true)  );
+		$url = $thumb['0']; 
+		$parsed_data[$key]['value'] = '<img src="'.$url.'"/>';
+	}
+
 }
 if($key == 'categories'){
 	if($value['type'] == 'categories' ){

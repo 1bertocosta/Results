@@ -24,9 +24,21 @@
 	background-color:rgba(0,0,0,0.03);
 }
 
-
+/* ---- */
 
 .list-widget-title{
 	line-height: 20px;
 }
 
+/* ---- */
+
+.post-featured-image{
+	float: left;
+}
+.entry-content .tags a{
+	font-size:12px;
+}
+.entry-content .tags{
+	margin-top:-10px;
+	margin-bottom:10px;
+}

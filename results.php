@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Resoults
+Plugin Name: Results
 Plugin URI: https://jeszcze.nic.pl
 Description: Display wp query on frontend as templated lists
 Author: gdurtan
@@ -17,7 +17,7 @@ class R_Lists_widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'R_Lists_widget', // Base ID
-			__( 'Resoults list ', 'text_domain' ), // Name
+			__( 'Results list ', 'text_domain' ), // Name
 			array( 'description' => __( 'Display wp query on frontend as templated lists', 'text_domain' ), ) // Args
 		);
 	}
@@ -152,8 +152,8 @@ class R_Lists_widget extends WP_Widget {
           <option value='list-table-1.php'<?php echo ($template=='list-table-1.php')?'selected':''; ?>>
             Table 1
           </option> 
-          <option value='Boston'<?php echo ($template=='Boston')?'selected':''; ?>>
-            Template 3 (not yet)
+          <option value='list-main-page-2.php'<?php echo ($template=='list-main-page-2.php')?'selected':''; ?>>
+             Main page list 2 
           </option> 
         </select>      	
 		</p>
