@@ -17,8 +17,8 @@ class R_Lists_widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			'R_Lists_widget', // Base ID
-			__( 'Post lists ', 'text_domain' ), // Name
-			array( 'description' => __( 'Resoults list', 'text_domain' ), ) // Args
+			__( 'Resoults list ', 'text_domain' ), // Name
+			array( 'description' => __( 'Display wp query on frontend as templated lists', 'text_domain' ), ) // Args
 		);
 	}
 
@@ -35,7 +35,8 @@ class R_Lists_widget extends WP_Widget {
 
 			$prepare_resoult = array();
 				
-			$std_schema_data = get_option( 'cpac_options_'.$instance['post_type']);
+			$std_schema_data = get_option( 'cpac_options_'.$post_type);
+
 			if($std_schema_data == false){
 				require( plugin_dir_path( __FILE__ ) . '/std-data.php' );
 			};
@@ -50,7 +51,7 @@ class R_Lists_widget extends WP_Widget {
 				}
 
 				$prepare_resoult[$the_query->post->ID] = $parsed_data;
-				$prepare_resoult[$the_query->post->ID]['id'] = $the_query->post->ID;
+				//$prepare_resoult[$the_query->post->ID]['id'] = $the_query->post->ID;
 			}
 			$this -> list_data = $prepare_resoult;
 	}
@@ -131,7 +132,7 @@ class R_Lists_widget extends WP_Widget {
 "query_args": {
 		"posts_per_page":"-1"
 	},
-	"acf_map_name":"location",
+	"acf_map_name":"location"
 }';
 		?>
 		<p>

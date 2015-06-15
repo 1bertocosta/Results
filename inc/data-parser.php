@@ -3,7 +3,7 @@
 
 $parsed_data[$key]['width'] = $value['width'];
 $parsed_data[$key]['width_unit'] = $value['width_unit'];
-
+$parsed_data[$key]['label'] = $value['label'];
 
 
 if($key == 'date'){
@@ -48,4 +48,13 @@ if($key == 'categories'){
 	foreach ($terms as $key1 => $value1) {
 		$parsed_data[$key]['value'] .= '<span>'.$value1->name.'</span>  ';
 	}
+}
+if($key == 'tags'){
+		$terms = wp_get_post_tags($the_query->post->ID);
+		$my_terms = '';
+		foreach ($terms as $key1 => $value1) {
+			//var_dump($value1);
+			$parsed_data[$key]['value'] .= '<span><a href="#">'.$value1->name.'</a></span>  ';
+		}
+		//$parsed_data[$key]['value'] = get_tags();
 }

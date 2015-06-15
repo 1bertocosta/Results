@@ -8,7 +8,7 @@
 
 		<?php foreach (current( (Array)$this->list_data) as $key => $value) { ?>
 			
-			<div class="wp_list_header_cell" style="<?php echo $style; ?>"><?php echo $key; ?></div>
+			<div class="wp_list_header_cell" style="<?php echo $style; ?>"><?php echo $value['label']; ?></div>
 
 		<?php } ?>
 
