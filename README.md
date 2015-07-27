@@ -4,10 +4,10 @@ compose, display and filter wp_query results
 
 # Create grid
 
-<img src="https://github.com/dadmor/Results/blob/master/screen1.png">
+<img src="https://github.com/dadmor/Results/blob/master/github-assets/screen1.png">
 
 # Add grid to WordPress page
 
 go to WP customizer: Dashboard > Appearance > Customize
 
-<img src="https://github.com/dadmor/Results/blob/master/screen2.png">
+<img src="https://github.com/dadmor/Results/blob/master/github-assets/screen2.png">
