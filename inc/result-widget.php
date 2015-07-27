@@ -1,15 +1,4 @@
 <?php
-/*
-Plugin Name: Results
-Plugin URI: https://jeszcze.nic.pl
-Description: Display wp query on frontend as templated lists
-Author: gdurtan
-Author URI: grzegorz.durtan.pl
-Version: 0.0.1
-License: GPL2
-*/
-
-
 class R_Lists_widget extends WP_Widget {
 
 	private $list_data = array();
@@ -59,15 +48,11 @@ class R_Lists_widget extends WP_Widget {
 	/**
 	 * Front-end display of widget.
 	 *
-	 * @see WP_Widget::widget()
-	 *
-	 * @param array $args     Widget arguments.
-	 * @param array $instance Saved values from database.
 	 */
 
 	public function widget( $args, $instance ) {
 
-		wp_register_style( 'fields-pack-style', plugins_url('/list_style.css', __FILE__) );
+		wp_register_style( 'fields-pack-style', plugins_url('/css/list-style.css', __FILE__) );
 		wp_enqueue_style('fields-pack-style');
 	
      	echo $args['before_widget'];
@@ -88,24 +73,7 @@ class R_Lists_widget extends WP_Widget {
 
 		$Q -> run($adv_query_options['query_args'],true);
 		
-		/* check queries difference */
-/*		$diff = array_diff($adv_query_options['query_args'] ,$wp_query->query_vars );
-		if (empty($diff)) {
-			echo 'no differences in queryies';
-		}else{
-			echo 'i have differences in queries';
-		}*/
-		
-		//$wp_query = new WP_Query( $adv_query_options['query_args'] );
-		
 		$this -> list_controller( $Q->last_query, $instance['post_type'] , $adv_query_options);
-
-		
-			
-		
-/*		echo '<pre style="font-size:11px">';
-		var_dump($this->list_data);
-		echo '</pre>';*/
 
 		/* TEMPLATE */
 		require( plugin_dir_path( __FILE__ ) . '/tpl/'.$instance['template'] );
@@ -167,12 +135,6 @@ class R_Lists_widget extends WP_Widget {
 	/**
 	 * Sanitize widget form values as they are saved.
 	 *
-	 * @see WP_Widget::update()
-	 *
-	 * @param array $new_instance Values just sent to be saved.
-	 * @param array $old_instance Previously saved values from database.
-	 *
-	 * @return array Updated safe values to be saved.
 	 */
 	public function update( $new_instance, $old_instance ) {
 		$instance = array();
@@ -183,11 +145,12 @@ class R_Lists_widget extends WP_Widget {
 		return $instance;
 	}
 
-} // class Markers_MAP
+} 
 
-
-// register Markers_MAP widget
+// register Results widget
 function register_R_Lists_widget() {
     register_widget( 'R_Lists_widget' );
 }
 add_action( 'widgets_init', 'register_R_Lists_widget' );
+
+/* -------------------------------------------------------------------- */

@@ -7,7 +7,6 @@ $parsed_data[$key]['field_type'] = $value['field_type'];
 $parsed_data[$key]['image_size_w'] = $value['image_size_w'];
 $parsed_data[$key]['image_size_h'] = $value['image_size_h'];
 
-
 if($key == 'date'){
 	$parsed_data[$key]['value'] = get_the_date();
 }
@@ -31,7 +30,6 @@ if($key == 'column-content'){
 	$parsed_data[$key]['value'] = get_the_content();
 }
 if(($key == 'column-meta')||($key =='column-meta-1')||($key =='column-meta-2')||($key =='column-meta-3')||($key =='column-meta-4')){
-	//$parsed_data[$key]['value'] = get_post_meta( $the_query->post->ID , $field , true);
 	$field = $value['field'];
 	if( $adv_query_options['acf_map_name'] != $field){
 		$parsed_data[$key]['value'] = get_post_meta( $the_query->post->ID , $field , true);
@@ -64,5 +62,4 @@ if($key == 'tags'){
 			//var_dump($value1);
 			$parsed_data[$key]['value'] .= '<span><a href="#">'.$value1->name.'</a></span>  ';
 		}
-		//$parsed_data[$key]['value'] = get_tags();
 }
