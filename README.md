@@ -1,6 +1,7 @@
 # wp-results
 
-compose, display and filter wp_query results
+compose, display and filter wp_query results.
+[Overview](https://github.com/dadmor/Results/wiki/OVERVIEW) 
 
 # Create grid
 
