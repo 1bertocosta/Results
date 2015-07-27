@@ -30,6 +30,7 @@ jQuery(document).ready(function($) {
 				console.log('------get-options-------');
 				console.log(response);
 				window.grid = response['value'];
+				reset_schema();
 				render_blocks();
 			});
 		});
@@ -44,6 +45,8 @@ jQuery(document).ready(function($) {
 				security: '<?php global $GRIDS; echo wp_create_nonce($GRIDS->scripts_prefix); ?>',
 			}, function(response) {
 				render_grid_group(response['group']);
+				reset_schema();
+				render_blocks();
 			});
 
 		});

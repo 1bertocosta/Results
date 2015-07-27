@@ -1,15 +1,14 @@
-window.grid = {
-	'top_header':true,
-	'wp_header':true,
-	'results_loop':true,
-	'wp_footer':true,
-}
+window.grid = {}
 var render_blocks;
 
 
 jQuery(document).ready(function($) {
 
-	var schema = {
+	var sidebar_target;
+	var schema = {}
+
+	reset_schema = function(){
+		schema = {
 		'top_header':true,
 		'wp_header':true,
 		'results_header':true,
@@ -20,12 +19,20 @@ jQuery(document).ready(function($) {
 		'bottom_bar_half':{'one':true,'two':true},
 		'bottom_bar_third':{'one':true,'two':true,'three':true},
 		'wp_footer':true,
-	};
+		}
+	}
 
-
-
+	reset_grid = function(){
+		window.grid = {
+			'top_header':true,
+			'wp_header':true,
+			'results_loop':true,
+			'wp_footer':true,
+		}
+	}
 	
-	var sidebar_target;
+	reset_grid();
+	reset_schema();
 
 	render_blocks = function(){
 
@@ -145,16 +152,21 @@ jQuery(document).ready(function($) {
 	render_blocks();
 
 	function resort_keys(schema){
-		
 		var tech_schema = {};
 		$.each(schema, function( index, value ) {
 			if(window.grid[index] != undefined){
-				tech_schema[index] = value;
-				//tech_schema[index] = window.grid[index];
+				//tech_schema[index] = value;
+				if(value == true){
+					tech_schema[index] = window.grid[index];
+				}else{
+					tech_schema[index] = value;
+				}
+
+				console.log(value);
 			}
+				
+			
 		});
-		console.log('tech_schema');
-		console.log(tech_schema);
 		return tech_schema;
 	
 	}
