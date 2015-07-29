@@ -35,7 +35,7 @@ include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';
 /* Register manu and display block */
 function wp_results_menu()
 {  
-	add_menu_page('Results', 'Results', 'administrator', 'url_wp_results', 'wp_results_callback');
+    add_menu_page('Results', 'Results', 'administrator', 'url_wp_results', 'wp_results_callback', 'dashicons-align-left');
 }
 add_action('admin_menu', 'wp_results_menu');
 
