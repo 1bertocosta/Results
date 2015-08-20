@@ -19,4 +19,4 @@ go to WP customizer: Dashboard > Appearance > Customize
 
 # Form and data process builder
 
-<img src="https://github.com/dadmor/Results/blob/master/github-assets/executable_form.png">
+<img src="https://github.com/dadmor/Results/blob/master/github-assets/executable-form.png">
