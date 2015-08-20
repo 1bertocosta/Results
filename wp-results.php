@@ -117,9 +117,9 @@ function add_grid_callback(){
 function add_parts_callback() {
 	?>
 	<div class="wrap">
-		<h2>WP Results plugin</h2>
+		<h2>WP Results parts</h2>
 		<?php
-		include 'inc/plugin-add-parts.php';
+		include 'inc/plugin-page-add-parts.php';
 		?>
 	</div>
 	<?php	
@@ -127,7 +127,7 @@ function add_parts_callback() {
 
 function add_forms_callback(){
 
-	wp_enqueue_script('jquery-ui-sortable');
+	//wp_enqueue_script('jquery-ui-sortable');
 
 	wp_register_script( 'alpaca-core', plugins_url('/js/alpaca-core.min.js', __FILE__) );
 	wp_enqueue_script('alpaca-core');
