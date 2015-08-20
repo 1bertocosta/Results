@@ -27,8 +27,8 @@ go to WP customizer: Dashboard > Appearance > Customize
 # Form and data process builder
 
 Forms component is developed on anothers repo:
-[alpacajs-ux-form-editor](https://github.com/dadmor/alpacajs-ux-form-editor)
-[wp-alpaca-options-class](https://github.com/dadmor/wp-alpaca-options-class)
+[alpacajs-ux-form-editor](https://github.com/dadmor/alpacajs-ux-form-editor), 
+[wp-alpaca-options-class](https://github.com/dadmor/wp-alpaca-options-class), 
 [WP_Executor](https://github.com/dadmor/WP_Executor)
 
 
