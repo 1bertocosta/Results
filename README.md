@@ -8,7 +8,7 @@ The mission of this project is to enable create web applications by only few cli
 
 Ultimately, I would like to post kits ready to build apps and portals like: work portals, photostocks, event portals, complex ecommerce apps and web solutions. The road to this goal will be implement dedicated CRM form processes.
 
-At first I'll try show how to create work portal.
+At first I'll try show how to create [work portal](https://github.com/dadmor/Results/wiki/WorkPortal-Example).
 
 # Main concept
 
