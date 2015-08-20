@@ -10,6 +10,8 @@ Ultimately, I would like to post kits ready to build apps and portals like: work
 
 At first I'll try show how to create [work portal](https://github.com/dadmor/Results/wiki/WorkPortal-Example).
 
+PS. Project are still in progress and waiting to contributors ;)
+
 # Main concept
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/wp_result_concept.png">
