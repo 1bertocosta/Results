@@ -5,7 +5,7 @@ Plugin URI: https://github.com/dadmor/Results
 Description: Display wp query on frontend as templated lists
 Author: gdurtan
 Author URI: https://pl.linkedin.com/pub/grzegorz-durtan/11/b74/296
-Version: 0.0.2
+Version: 0.0.3
 License: GPL2
 */
 
@@ -20,12 +20,13 @@ $ACOL = new admin_column_frontend();
 /* Include class to inject custom templates int wordpress pages */
 include plugin_dir_path( __FILE__ ).'class/virtual-template.class.php';
 
-/* Inclide search and filters class */
-include plugin_dir_path( __FILE__ ).'class/search-filter.class.php';
-include plugin_dir_path( __FILE__ ).'inc/filter-search-widget.php';
+/* Inclide search and filters class - remove it on another plugin */
+//include plugin_dir_path( __FILE__ ).'class/search-filter.class.php';
+//include plugin_dir_path( __FILE__ ).'inc/filter-search-widget.php';
 
 /* widget to display loop with sidebars */
-include plugin_dir_path( __FILE__ ).'inc/result-widget.php';
+/* result widget remove admin bar ??? */
+//include plugin_dir_path( __FILE__ ).'inc/result-widget.php';
 
 include plugin_dir_path( __FILE__ ).'inc/cart-widget.php';
 
@@ -36,10 +37,52 @@ include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';
 function wp_results_menu()
 {  
 	add_menu_page('Results', 'Results', 'administrator', 'url_wp_results', 'wp_results_callback');
+	add_submenu_page('url_wp_results', 'Results GRID', 'Results GRID', 'administrator', 'url_wp_results_grid', 'add_grid_callback');
+	add_submenu_page('url_wp_results', 'Results TPL parts', 'Results TPL parts', 'administrator', 'url_wp_results_parts', 'add_parts_callback');
 }
+
+
+
 add_action('admin_menu', 'wp_results_menu');
 
-function wp_results_callback(){
+
+
+function wp_results_callback() {
+
+	echo '<div class="wrap">';
+		echo '<h2>WP Results plugin</h2>';
+		echo '<div style="border-top:1px solid #666; margin-bottom:20px;">OVERVIEW</div>';
+		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Lite Page builder</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-grid.png', __FILE__) .'">';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
+		echo '</div>';
+		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Display composer</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-composer.png', __FILE__) .'">';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>';
+		echo '</div>';
+		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Search and filter</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-filter.png', __FILE__) .'">';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
+		echo '</div>';
+	echo '</div>';
+	echo '<div class="wrap">';
+		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Add cart (PAYPAL)</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-pay.png', __FILE__) .'">';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
+		echo '</div>';
+		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Loop posts as widget</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-list.png', __FILE__) .'">';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
+		echo '</div>';
+		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Integration with admin columns</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-columns.png', __FILE__) .'">';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
+		echo '</div>';
+	echo '</div>';
+
+}
+
+function add_grid_callback(){
 	
 	wp_register_style( 'skeleton-style', plugins_url('/css/skeleton-grid-creator.css', __FILE__) );
 	wp_enqueue_style('skeleton-style');
@@ -59,6 +102,32 @@ function wp_results_callback(){
 	</div>
 	<?php
 }
+
+function add_parts_callback() {
+
+	echo '<div class="wrap">';
+		echo '<h2>WP Results plugin</h2>';
+		echo '<div style="border-top:1px solid #666; margin-bottom:20px;">Template parts</div>';
+		
+		
+
+		echo '<div style="float:left; width:30%; margin-right:3%">';
+		echo '<h3>Dynamic table (WP Results)</h3>';
+		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/tpl-part-table.png', __FILE__) .'">';
+		echo '<p><b>Description:</b></p>';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>';
+		echo '<p><b>Options:</b></p>';
+		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>';
+		echo '</div>';
+		
+		
+
+		echo '<h3>Dynamic table (Admin columns)</h3>';
+		echo '<h3>Dynamic table in CART (Admin columns)</h3>';
+	echo '</div>';
+	
+}
+
 
 function wp_result_theme_scripts() {
 	//echo 'skeleton-style';
@@ -115,33 +184,3 @@ function my_sidebar($id){
 
 }
 
-/* ACTIONS */
-
-function search_filter($query) {
-  if ( !is_admin() && $query->is_main_query() ) {
-    //if ($query->is_search) {
-      
-		// ignore null metas
-		foreach ($_POST['meta_query'] as $key => $value) {
-			if(($value['ignore_null'] == 'true')&&($value['value'] == 'null')){
-				unset($_POST['meta_query'][$key]);
-			}
-		}
-		foreach ($_POST['tax_query'] as $key => $value) {
-			if(($value['ignore_null'] == 'true')&&($value['terms'] == 'null')){
-				unset($_POST['meta_query'][$key]);
-			}
-		}
-
-		
-
-      	if (!empty($_POST['meta_query'])) {
-			$query->set('meta_query', $_POST['meta_query'] );
-		}
-
-      	$query->set('tax_query', $_POST['tax_query'] );
-   // }
-  }
-}
-
-add_action('pre_get_posts','search_filter');
