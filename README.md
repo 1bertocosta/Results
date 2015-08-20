@@ -1,12 +1,12 @@
 # WP RESULTS WordPress plugin
 
-The mission of this project is to enable create web applications by only few clicks. 
-"Wp Results" consist of two main modules:
+The mission of this project is to enable creating web applications by only few clicks. 
+"Wp Results" consists of two main modules:
 
 1. Form to input and process data. 
-2. Composer to display storaged data.  
+2. Composer to display stored data.  
 
-Ultimately, I would like to post kits ready to build apps and portals like: work portals, photostocks, event portals, complex ecommerce apps and web solutions. The road to this goal will be implement dedicated CRM form processes.
+Ultimately, I would like to publish kits based on "Wp Results" which enable building almost any app and portal. I am going to show it on examples like: work portals, photostocks, event portals, complex ecommerce apps and web solutions. In order to present possibilities of "Wp Results" each portal will have its own, dedicated CRM module.
 
 At first I'll try show how to create [work portal](https://github.com/dadmor/Results/wiki/WorkPortal-Example).
 
