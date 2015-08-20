@@ -113,3 +113,36 @@ try{
 }*/
 
 
+/* old file version - with postbox */
+
+/*var prepareData = function (data,method){
+		if( method == 'wp_postmeta'){
+			return encodeURIComponent(JSON.stringify(data));
+		}
+		if( method == 'wp_options'){
+			return data;
+		}
+	}
+	var _id = ajax_object['form_id'];
+	
+	$('#alpaca-data-' +  _id).val(ajax_object['form_data']);
+    try{
+        data=JSON.parse(decodeURIComponent(ajax_object['form_data']));
+    }catch(e){
+        //alert(e); //error in the above string(in this case,yes)!
+        data = {};
+    }
+
+	$( "#" + _id ).alpaca({
+		"data" : data,
+		"optionsSource": ajax_object['paths']['base'] + '/' + ajax_object['paths']['schemas'] + _id + "-options.json",
+		"schemaSource": ajax_object['paths']['base'] + '/' + ajax_object['paths']['schemas'] + _id + "-schema.json",
+		"postRender": function(renderedForm) {
+			$( '#' + _id + ' select, #' + _id + ' input, #' + _id + ' textarea').live( 'change', function() {
+				var val = renderedForm.getValue();
+				$('#alpaca-data-' +  _id).val(encodeURIComponent(JSON.stringify(val)));
+			});
+		}
+	});
+*/
+

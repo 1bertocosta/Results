@@ -49,6 +49,7 @@ function wp_results_menu()
 	add_menu_page('Results', 'Results', 'administrator', 'url_wp_results', 'wp_results_callback');
 	add_submenu_page('url_wp_results', 'Results GRID', 'Results GRID', 'administrator', 'url_wp_results_grid', 'add_grid_callback');
 	add_submenu_page('url_wp_results', 'Results TPL parts', 'Results TPL parts', 'administrator', 'url_wp_results_parts', 'add_parts_callback');
+	add_submenu_page('url_wp_results', 'Results Forms', 'Results Forms', 'administrator', 'url_wp_results_forms', 'add_forms_callback');
 }
 
 
@@ -107,37 +108,57 @@ function add_grid_callback(){
 	<div class="wrap">
 		<h2>WP Results plugin</h2>
 		<?php
-		include 'inc/grid.php';
+		include 'inc/plugin-page-grid.php';
 		?>
 	</div>
 	<?php
 }
 
 function add_parts_callback() {
-
-	echo '<div class="wrap">';
-		echo '<h2>WP Results plugin</h2>';
-		echo '<div style="border-top:1px solid #666; margin-bottom:20px;">Template parts</div>';
-		
-		
-
-		echo '<div style="float:left; width:30%; margin-right:3%">';
-		echo '<h3>Dynamic table (WP Results)</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/tpl-part-table.png', __FILE__) .'">';
-		echo '<p><b>Description:</b></p>';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>';
-		echo '<p><b>Options:</b></p>';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>';
-		echo '</div>';
-		
-		
-
-		echo '<h3>Dynamic table (Admin columns)</h3>';
-		echo '<h3>Dynamic table in CART (Admin columns)</h3>';
-	echo '</div>';
-	
+	?>
+	<div class="wrap">
+		<h2>WP Results plugin</h2>
+		<?php
+		include 'inc/plugin-add-parts.php';
+		?>
+	</div>
+	<?php	
 }
 
+function add_forms_callback(){
+
+	wp_enqueue_script('jquery-ui-sortable');
+
+	wp_register_script( 'alpaca-core', plugins_url('/js/alpaca-core.min.js', __FILE__) );
+	wp_enqueue_script('alpaca-core');
+
+	wp_register_script( 'lodash', plugins_url('/js/lodash.js', __FILE__) );
+	wp_enqueue_script('lodash');
+
+	wp_register_script( 'lodash-deep', plugins_url('/js/lodash-deep.js', __FILE__) );
+	wp_enqueue_script('lodash-deep');
+
+	wp_register_script( 'alpacajs-ux-form-editor', plugins_url('/js/alpacajs-ux-form-editor.js', __FILE__) );
+	wp_enqueue_script('alpacajs-ux-form-editor');
+
+	wp_register_style( 'alpaca', plugins_url('/css/alpaca.min.css', __FILE__) );
+	wp_enqueue_style('alpaca');
+
+	wp_register_style( 'ux-form-editor', plugins_url('/css/ux-form-editor-style.css', __FILE__) );
+	wp_enqueue_style('ux-form-editor');
+
+	
+
+	
+	?>
+	<div class="wrap">
+		<h2>WP Results plugin</h2>
+		<?php
+		include 'inc/plugin-page-ux-form-builder.php';
+		?>
+	</div>
+	<?php
+}
 
 function wp_result_theme_scripts() {
 	//echo 'skeleton-style';
