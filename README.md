@@ -1,9 +1,5 @@
 # wp-results
 
-compose, display and filter wp_query results.
-[Overview](https://github.com/dadmor/Results/wiki/OVERVIEW) 
-
-
 The mission of this project is to enable create web applications by only few clicks. 
 "Wp Results" consist of two main modules:
 
@@ -35,5 +31,10 @@ Forms component is developed on anothers repo:
 [wp-alpaca-options-class](https://github.com/dadmor/wp-alpaca-options-class)
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/executable-form.png">
+<hr>
 
 This form after collect and send create new post with post_meta data.
+
+# More details
+
+To read more details go to plugin [Overview](https://github.com/dadmor/Results/wiki/OVERVIEW) 
