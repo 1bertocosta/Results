@@ -9,6 +9,9 @@ Version: 0.0.2
 License: GPL2
 */
 
+define("PLUGIN_SANDF_DIR", dirname(__FILE__));
+define("PLUGIN_SANDF_URI", plugin_dir_url( __FILE__ ));
+
 /* Include better manage wp options */
 include plugin_dir_path( __FILE__ ).'class/wp-options-manager.class.php';
 $GRIDS = new wp_options_manager('grids');
@@ -21,8 +24,12 @@ $ACOL = new admin_column_frontend();
 include plugin_dir_path( __FILE__ ).'class/virtual-template.class.php';
 
 /* Inclide search and filters class - remove it on another plugin */
-//include plugin_dir_path( __FILE__ ).'class/search-filter.class.php';
-//include plugin_dir_path( __FILE__ ).'inc/filter-search-widget.php';
+include plugin_dir_path( __FILE__ ).'class/wp-alpaca-options.class.php';
+include plugin_dir_path( __FILE__ ).'class/wp-search-and-filter.class.php';
+include plugin_dir_path( __FILE__ ).'inc/filter-search-widget.php';
+
+/* Inclide search and filters class */
+
 
 /* widget to display loop with sidebars */
 /* result widget remove admin bar ??? */
@@ -32,6 +39,9 @@ include plugin_dir_path( __FILE__ ).'inc/cart-widget.php';
 
 /* ADD CUSTOMIZE CONTROLLS TO THIS THEME */
 include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';
+
+/* ADD ENDPOINT REST API */
+include plugin_dir_path( __FILE__ ).'inc/rest-endpoint-api.php';
 
 /* Register manu and display block */
 function wp_results_menu()
