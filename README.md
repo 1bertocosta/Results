@@ -16,3 +16,7 @@ compose, display and filter wp_query results.
 go to WP customizer: Dashboard > Appearance > Customize
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/screen2.png">
+
+# Form and data process builder
+
+<img src="https://github.com/dadmor/Results/blob/master/github-assets/executable_form.png">
