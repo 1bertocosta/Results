@@ -3,6 +3,10 @@
 compose, display and filter wp_query results.
 [Overview](https://github.com/dadmor/Results/wiki/OVERVIEW) 
 
+# Main concept
+
+<img src="https://github.com/dadmor/Results/blob/master/github-assets/wp_result_concept.svg">
+
 # Create grid
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/screen1.png">
