@@ -5,7 +5,7 @@ compose, display and filter wp_query results.
 
 # Main concept
 
-<img src="https://github.com/dadmor/Results/blob/master/github-assets/wp_result_concept.svg">
+<img src="https://github.com/dadmor/Results/blob/master/github-assets/wp_result_concept.png">
 
 # Create grid
 
