@@ -24,3 +24,5 @@ Forms component is developed on anothers repo:
 [wp-alpaca-options-class](https://github.com/dadmor/wp-alpaca-options-class)
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/executable-form.png">
+
+This form after collect and send create new post with post_meta data.
