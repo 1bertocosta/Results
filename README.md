@@ -1,4 +1,4 @@
-# wp-results
+# WP RESULTS WordPress plugin
 
 The mission of this project is to enable create web applications by only few clicks. 
 "Wp Results" consist of two main modules:
@@ -29,6 +29,8 @@ go to WP customizer: Dashboard > Appearance > Customize
 Forms component is developed on anothers repo:
 [alpacajs-ux-form-editor](https://github.com/dadmor/alpacajs-ux-form-editor)
 [wp-alpaca-options-class](https://github.com/dadmor/wp-alpaca-options-class)
+[WP_Executor](https://github.com/dadmor/WP_Executor)
+
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/executable-form.png">
 <hr>
