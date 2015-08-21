@@ -8,45 +8,74 @@
 
 <link type="text/css" href="css/alpaca-min.css" rel="stylesheet"/>
 <link type="text/css" href="css/ux-form-editop-style.css" rel="stylesheet"/> -->
-test
 
-	<h1 id="form-title">Form creator</h1>
-	<div id="main_container" style="float:left; width:70%">
-	</div>
-	<div id="forms-elements" style="float:right: width:25%; text-align:center; position:fixed; right:20px">
-		<a id="add_input" href="#" class="button action" style="width:200px; margin-bottom:2px">+ ADD FIELD (text)</a><Br/>
-		<!-- <a id="add_select" href="#" class="button action" style="width:200px; margin-bottom:2px">multi choice</a><Br/>
-		<a id="add_checkbox" href="#" class="button action" style="width:200px; margin-bottom:2px">single checkbox</a><Br/> -->
-		<a id="add_object" href="#" class="button action" style="width:200px; margin-bottom:2px">CONTAINER (fieldset)</a><Br/>
-		<a id="add_array" href="#" class="button action" style="width:200px; margin-bottom:2px">REPEATER (array)</a><Br/>
-		<div style="line-height:40px">WordPress Templates</div>
-		<a id="add_model_insert_post" href="#" class="button action" style="width:200px; margin-bottom:2px">wp_mail</a><Br/>
-		<a id="add_model_insert_post" href="#" class="button action" style="width:200px; margin-bottom:2px">wp_insert_post</a><Br/>
-		<a id="add_model_insert_post" href="#" class="button action" style="width:200px; margin-bottom:2px">wp_insert_user</a><Br/>
-		<a id="add_model_insert_post" href="#" class="button action" style="width:200px; margin-bottom:2px">wp_signon</a><Br/>
-		<a id="add_model_insert_post" href="#" class="button action" style="width:200px; margin-bottom:2px">wp_redirect</a><Br/>
-	</div>
 
-	<br style="clear:both"/>
-	<br style="clear:both"/>
-	<br style="clear:both"/>
-	<br style="clear:both"/>
-	<h2>Form schema and options output</h2>
-	<form method="post" action="test/index.php">
-		<table style="width:100%">
-			<tr>
-				<td>Schema<textarea id="schema_output" name="schema_output"></textarea></td>
-				<td>Options<textarea id="options_output" name="options_output"></textarea></td>
-			</tr>
-		</table>	
-		<table style="width:100%">
-			<tr>
-				<td>
-					<input type="submit" id="renderForm" href="#" class="buttondown" value="Show created form">
-				</td>
-			</tr>
-		</table>	
-	</form>
+<div class="container subtitle">Create and define executions for your forms.</div>
+<div class="container grid-app">
+	<!-- top bar with input title and save button -->
+	<div class="row" style="margin-top:20px; margin-bottom:20px">
+			<div class="nine columns">
+				<div id="register-grid-input">
+						<input type="text" name="grid_title" size="30" value="" spellcheck="true" autocomplete="off" placeholder="name your created form">
+				</div>
+			</div>
+			<div class="three columns">
+				<div class="save-btn"><div class="button">Save created form</div></div>
+			</div>
+	</div>
+	<!-- body container with main grid creator -->
+	<div class="row">	
+		<!-- left column -->
+		<div id="grid_controlls" class="two columns">
+			<a id="add_input" href="#" class="button action">+ ADD FIELD (text)</a><Br/>
+			<!-- <a id="add_select" href="#" class="button action">multi choice</a><Br/>
+			<a id="add_checkbox" href="#" class="button action">single checkbox</a><Br/> -->
+			<a id="add_object" href="#" class="button action">CONTAINER (fieldset)</a><Br/>
+			<a id="add_array" href="#" class="button action">REPEATER (array)</a><Br/>
+			<div style="line-height:40px">WordPress Templates</div>
+			<a id="add_model_insert_post" href="#" class="button action">wp_mail</a><Br/>
+			<a id="add_model_insert_post" href="#" class="button action">wp_insert_post</a><Br/>
+			<a id="add_model_insert_post" href="#" class="button action">wp_insert_user</a><Br/>
+			<a id="add_model_insert_post" href="#" class="button action">wp_signon</a><Br/>
+			<a id="add_model_insert_post" href="#" class="button action">wp_redirect</a><Br/>
+		</div>
+		<!-- middle column -->
+		<div id="main_container" class="seven columns u-max-width">
+		</div>
+		<!-- right column -->
+		<div class="three columns">
+			<div class="title">Forms list</div>
+			<div id="grid-list">
+			<?php
+				global $R_FORMS;
+				foreach ($R_FORMS->list_group('forms') as $key) {
+					echo '<div class="grids-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
+				}
+			?>
+			</div>
+		</div>
+	</div>
+	<!-- end main containers -->
+</div>
+
+
+
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+<br style="clear:both"/>
+<h2>Form schema and options output (for programmers)</h2>
+<form method="post" action="test/index.php">
+	
+	<div>Schema</div>
+	<textarea id="schema_output" name="schema_output" style="width:100%; font-size:11px; font-family:courier;"></textarea>
+	<div>Options</div>
+	<textarea id="options_output" name="options_output" style="width:100%; font-size:11px; font-family:courier"></textarea>
+		
+	<input type="submit" id="renderForm" href="#" class="buttondown" value="Show created form">
+			
+</form>
+	
 
 
 <script id="helper-container-tpl" type="text/x-jquery-tmpl">

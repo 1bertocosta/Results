@@ -1,8 +1,8 @@
 window.grid = {}
 var render_blocks;
 
-
-jQuery(document).ready(function($) {
+(function($) { 
+//jQuery(document).ready(function($) {
 
 	var sidebar_target;
 	var schema = {}
@@ -47,38 +47,26 @@ jQuery(document).ready(function($) {
 			if((index != 'right_bar')&&(index != 'left_bar')&&(index != 'bottom_bar_half')&&(index != 'bottom_bar_third')&&(index != 'results_loop')){
 				// add row
 				if((index != 'wp_header')&&(index != 'wp_footer')){
-					
-					$('#grid article').append('<section data-name="'+index+'" class="grid-row "><div class="twelve column blue">'+index+' <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div></section>');
-				
-				}else{
-					
-					$('#grid article').append('<section data-name="'+index+'" class="grid-row  "><div class="twelve column">'+index+'</div></section>');
+					$("#one-column-with-link").tmpl({index: index}).appendTo("#grid article");
+				}else{					
+					$("#one-column").tmpl({index: index}).appendTo("#grid article");
 				}				
 			}
 
 			// bottom bars
 			if(index == 'bottom_bar_half'){
-				var output = '';
-				output += '	<section data-name="container" class="grid-row ">';
-				output += '		<div data-name="'+index+'-one" class="one-half column blue">'+index+' <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>';
-				output += '		<div data-name="'+index+'-two" class="one-half column blue">'+index+' <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>';
-				output += '	</section>';
-				$('#grid article').append(output);
+				//$('#grid article').append(output);
+				$("#two-columns").tmpl({index: index}).appendTo("#grid article");
 			}
 			if(index == 'bottom_bar_third'){
-				var output = '';
-				output += '	<section data-name="container" class="grid-row ">';
-				output += '		<div data-name="'+index+'-one" class="one-third column blue">'+index+' <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>';
-				output += '		<div data-name="'+index+'-two" class="one-third column blue">'+index+' <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>';
-				output += '		<div data-name="'+index+'-three" class="one-third column blue">'+index+' <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>';
-				output += '	</section>';
-				$('#grid article').append(output);
+				//$('#grid article').append(output);
+				$("#three-columns").tmpl({index: index}).appendTo("#grid article");
 			}
 
 			// loop, left and right
 			if((index == 'right_bar')||(index == 'left_bar')||(index == 'results_loop')){
 				if(main_content==0){
-					$('#grid article').append('<section data-name="container" class="grid-row loop"></div>');
+					$("#loop-tpl").tmpl({}).appendTo("#grid article");
 				}
 				main_content++;
 			}
@@ -102,14 +90,13 @@ jQuery(document).ready(function($) {
 		}
 
 		if(window.grid['left_bar']!=undefined){
-			$( ".loop" ).append('<div data-name="left_bar" class="'+bar+' blue bar">left_bar <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>');
+			$("#left-bar").tmpl({bar: bar}).appendTo(".loop");
 		}
 		if(window.grid['results_loop']==true){
-			
-			$( ".loop" ).append('<div class="'+row+' green"><div>resoults_loop</div><div>&nbsp;</div><div>&nbsp;</div></div>');
+			$("#loop-cell").tmpl({row: row}).appendTo(".loop");
 		}
 		if(window.grid['right_bar']!=undefined){
-			$( ".loop" ).append('<div data-name="right_bar" class="'+bar+' blue bar">right_bar <a href="#TB_inline?width=650&height=420&inlineId=my-content-id" class="thickbox"><div class="dashicons dashicons-admin-links"></div></a></div>');
+			$("#right-bar").tmpl({bar: bar}).appendTo(".loop");
 		}
 
 		//colored linked elements
@@ -124,15 +111,12 @@ jQuery(document).ready(function($) {
 
 						$('section div[data-name="'+index+'"]').addClass('green');
 						$('section div[data-name="'+index+'"]').append('<pre class="reg_sidebar">['+value['name']+']</pre>');
-				
 						
 					}else{
 
 						$('section[data-name="'+index+'"]').children().addClass('green');
 						$('section[data-name="'+index+'"]').children().append('<pre class="reg_sidebar">['+value['name']+']</pre>');
-
 					}
-
 
 				}else{
 
@@ -153,6 +137,12 @@ jQuery(document).ready(function($) {
 
 	function resort_keys(schema){
 		var tech_schema = {};
+		
+		if(window.grid == undefined){
+			alert('something wrong');
+			return schema;
+		}
+		
 		$.each(schema, function( index, value ) {
 			if(window.grid[index] != undefined){
 				//tech_schema[index] = value;
@@ -164,8 +154,6 @@ jQuery(document).ready(function($) {
 
 				console.log(value);
 			}
-				
-			
 		});
 		return tech_schema;
 	
@@ -184,6 +172,10 @@ jQuery(document).ready(function($) {
 		render_blocks();
 	}
 
+	function run_sidebars_panel(){
+		
+	}
+
 	$('#grid_controlls .button').click(function(){
 		if($(this).hasClass('button-primary')){
 			
@@ -197,17 +189,24 @@ jQuery(document).ready(function($) {
 		}
 	});
 
-	$('#TB_ajaxContent .button').live('click',function(){
-		
+	//$('article .grid-btn .button').live('click',function(){
+	$('#grid').on('click','.grid-btn .button',function(){	
+
 		var sidebar = {'id':null,'name':null};
 		sidebar['id'] = $(this).attr('data-name');
 		sidebar['name'] = $(this).text();
 		link_sidebar(sidebar,sidebar_target);
-		tb_remove();
+
+		$('#sidebar-list-body').remove();
+		$('#grid article').fadeIn();
 
 	});
 
 	$('#grid').on('click','.dashicons-admin-links',function(){
+
+
+		$('#grid article').fadeOut();
+		$("#sidebars-list").tmpl({}).appendTo("#grid");
 
 		sidebar_target = $(this).closest('section').attr('data-name');
 		if(sidebar_target == 'container'){
@@ -218,4 +217,5 @@ jQuery(document).ready(function($) {
 
 
 
-});
+//});
+})(jQuery);

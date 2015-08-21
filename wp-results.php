@@ -17,6 +17,9 @@ include plugin_dir_path( __FILE__ ).'class/wp-options-manager.class.php';
 $GRIDS = new wp_options_manager('grids');
 $GRIDS -> register_ajax_methods();
 
+$R_FORMS = new wp_options_manager('forms');
+$R_FORMS -> register_ajax_methods();
+
 include plugin_dir_path( __FILE__ ).'class/admin-column-frontend.class.php';
 $ACOL = new admin_column_frontend();
 
@@ -50,7 +53,7 @@ function wp_results_menu()
 	add_menu_page('Results', 'Results', 'administrator', 'url_wp_results', 'wp_results_callback');
 	add_submenu_page('url_wp_results', 'Results GRID', 'Results GRID', 'administrator', 'url_wp_results_grid', 'add_grid_callback');
 	add_submenu_page('url_wp_results', 'Results TPL parts', 'Results TPL parts', 'administrator', 'url_wp_results_parts', 'add_parts_callback');
-	add_submenu_page('url_wp_results', 'Results Forms', 'Results Forms', 'administrator', 'url_wp_results_forms', 'add_forms_callback');
+	add_submenu_page('url_wp_results', 'Results FORMS', 'Results FORMS', 'administrator', 'url_wp_results_forms', 'add_forms_callback');
 }
 add_action('admin_menu', 'wp_results_menu');
 
@@ -60,7 +63,7 @@ function wp_results_callback() {
 
 function add_grid_callback(){
 	wpr_reg_styles( array('skeleton-grid-creator', 'grid-creator' ) );
-	wpr_reg_scripts( array('grid-creator'));
+	wpr_reg_scripts( array('jquery-tmpl.min','grid-creator','options-manager-helpers'));
 	wpr_admin_page( 'grid', 'WP Results Grid Creator' );
 }
 
@@ -69,9 +72,10 @@ function add_parts_callback() {
 }
 
 function add_forms_callback(){
-	//wp_enqueue_script('jquery-ui-sortable');
+	wp_enqueue_script('jquery-ui-sortable');
+
 	wpr_reg_scripts( array( 'alpaca-core.min', 'lodash', 'lodash-deep', 'alpacajs-ux-form-editor' ));
-	wpr_reg_styles( array('alpaca.min', 'ux-form-editor-style' ));
+	wpr_reg_styles( array('alpaca.min', 'ux-form-editor-style', 'skeleton-grid-creator', 'grid-creator' ));
 	wpr_admin_page('ux-form-builder', 'WP Results Form Builder' );
 }
 
@@ -119,7 +123,6 @@ function my_sidebar($id){
 			echo '&nbsp;';
 		}
 	}
-
 }
 
 /* ADMIN PAGES HELPERS METHODS */

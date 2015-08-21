@@ -1,4 +1,4 @@
-var _UXFORM;
+var _UXFORM = {};
 ( function( $ ) {
 		/* short nodes references */
 		_fs = '.alpaca-fieldset';
