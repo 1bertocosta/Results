@@ -2,10 +2,10 @@
 /*
 Plugin Name: WP Results
 Plugin URI: https://github.com/dadmor/Results
-Description: Display wp query on frontend as templated lists
+Description: Results will be amazing!!!
 Author: gdurtan
 Author URI: https://pl.linkedin.com/pub/grzegorz-durtan/11/b74/296
-Version: 0.0.2
+Version: 0.0.3
 License: GPL2
 */
 
@@ -43,6 +43,7 @@ include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';
 /* ADD ENDPOINT REST API */
 include plugin_dir_path( __FILE__ ).'inc/rest-endpoint-api.php';
 
+
 /* Register manu and display block */
 function wp_results_menu()
 {  
@@ -51,125 +52,32 @@ function wp_results_menu()
 	add_submenu_page('url_wp_results', 'Results TPL parts', 'Results TPL parts', 'administrator', 'url_wp_results_parts', 'add_parts_callback');
 	add_submenu_page('url_wp_results', 'Results Forms', 'Results Forms', 'administrator', 'url_wp_results_forms', 'add_forms_callback');
 }
-
-
-
 add_action('admin_menu', 'wp_results_menu');
 
-
-
 function wp_results_callback() {
-
-	echo '<div class="wrap">';
-		echo '<h2>WP Results plugin</h2>';
-		echo '<div style="border-top:1px solid #666; margin-bottom:20px;">OVERVIEW</div>';
-		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Lite Page builder</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-grid.png', __FILE__) .'">';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
-		echo '</div>';
-		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Display composer</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-composer.png', __FILE__) .'">';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>';
-		echo '</div>';
-		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Search and filter</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-filter.png', __FILE__) .'">';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
-		echo '</div>';
-	echo '</div>';
-	echo '<div class="wrap">';
-		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Add cart (PAYPAL)</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-pay.png', __FILE__) .'">';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
-		echo '</div>';
-		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Loop posts as widget</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-list.png', __FILE__) .'">';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
-		echo '</div>';
-		echo '<div style="float:left; width:30%; margin-right:3%"><h3>Integration with admin columns</h3>';
-		echo '<img style="width:100%; height:auto" src="'.plugins_url('/github-assets/overview-columns.png', __FILE__) .'">';
-		echo '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>';
-		echo '</div>';
-	echo '</div>';
-
+	wpr_admin_page( 'home' , 'WP Results plugin' );
 }
 
 function add_grid_callback(){
-	
-	wp_register_style( 'skeleton-style', plugins_url('/css/skeleton-grid-creator.css', __FILE__) );
-	wp_enqueue_style('skeleton-style');
-
-	wp_register_style( 'grid-creator-style', plugins_url('/css/grid-creator.css', __FILE__) );
-	wp_enqueue_style('grid-creator-style');
-
-	wp_register_script( 'grid-creator-script', plugins_url('/js/grid-creator.js', __FILE__) );
-	wp_enqueue_script('grid-creator-script');
-
-	?>
-	<div class="wrap">
-		<h2>WP Results plugin</h2>
-		<?php
-		include 'inc/plugin-page-grid.php';
-		?>
-	</div>
-	<?php
+	wpr_reg_styles( array('skeleton-grid-creator', 'grid-creator' ) );
+	wpr_reg_scripts( array('grid-creator'));
+	wpr_admin_page( 'grid', 'WP Results Grid Creator' );
 }
 
 function add_parts_callback() {
-	?>
-	<div class="wrap">
-		<h2>WP Results parts</h2>
-		<?php
-		include 'inc/plugin-page-add-parts.php';
-		?>
-	</div>
-	<?php	
+	wpr_admin_page( 'add-parts', 'WP Results parts' );
 }
 
 function add_forms_callback(){
-
 	//wp_enqueue_script('jquery-ui-sortable');
-
-	wp_register_script( 'alpaca-core', plugins_url('/js/alpaca-core.min.js', __FILE__) );
-	wp_enqueue_script('alpaca-core');
-
-	wp_register_script( 'lodash', plugins_url('/js/lodash.js', __FILE__) );
-	wp_enqueue_script('lodash');
-
-	wp_register_script( 'lodash-deep', plugins_url('/js/lodash-deep.js', __FILE__) );
-	wp_enqueue_script('lodash-deep');
-
-	wp_register_script( 'alpacajs-ux-form-editor', plugins_url('/js/alpacajs-ux-form-editor.js', __FILE__) );
-	wp_enqueue_script('alpacajs-ux-form-editor');
-
-	wp_register_style( 'alpaca', plugins_url('/css/alpaca.min.css', __FILE__) );
-	wp_enqueue_style('alpaca');
-
-	wp_register_style( 'ux-form-editor', plugins_url('/css/ux-form-editor-style.css', __FILE__) );
-	wp_enqueue_style('ux-form-editor');
-
-	
-
-	
-	?>
-	<div class="wrap">
-		<h2>WP Results plugin</h2>
-		<?php
-		include 'inc/plugin-page-ux-form-builder.php';
-		?>
-	</div>
-	<?php
+	wpr_reg_scripts( array( 'alpaca-core.min', 'lodash', 'lodash-deep', 'alpacajs-ux-form-editor' ));
+	wpr_reg_styles( array('alpaca.min', 'ux-form-editor-style' ));
+	wpr_admin_page('ux-form-builder', 'WP Results Form Builder' );
 }
 
 function wp_result_theme_scripts() {
-	//echo 'skeleton-style';
-	wp_register_style( 'skeleton-style', plugins_url('/css/skeleton-only-grid.css', __FILE__) );
-	wp_enqueue_style('skeleton-style');
-	
-	//echo 'template parts styles';
-	wp_register_style( 'fields-pack-style', plugins_url('/css/list-style.css', __FILE__) );
-	wp_enqueue_style('fields-pack-style');
+	wpr_reg_styles( array('skeleton-only-grid','list-style' ) );
 }
-
 add_action( 'wp_enqueue_scripts', 'wp_result_theme_scripts' );
 
 /* dynamic template helpers functions */
@@ -195,7 +103,6 @@ function get_skeleton_class($tpl){
 			$side_class = 'six';
 		}
 	}
-
 	return (object)array('side'=> $side_class, 'loop' => $loop_class);
 }
 
@@ -215,3 +122,21 @@ function my_sidebar($id){
 
 }
 
+/* ADMIN PAGES HELPERS METHODS */
+function wpr_reg_scripts( $array ){
+	foreach ( $array as $key ) {
+		wp_register_script( $key, plugins_url('/js/'.$key.'.js', __FILE__) );
+		wp_enqueue_script( $key );
+	}
+}
+function wpr_reg_styles( $array ){
+	foreach ( $array as $key ) {
+		wp_register_style( $key, plugins_url('/css/'.$key.'.css', __FILE__) );
+		wp_enqueue_style( $key );
+	}
+}
+function wpr_admin_page( $page , $name ){
+	echo '<div class="wrap"><h2>'.$name.'</h2>';
+	include 'inc/plugin-page-'.$page.'.php';
+	echo '</div>';
+}
