@@ -5,7 +5,7 @@ Plugin URI: https://github.com/dadmor/Results
 Description: Results will be amazing!!!
 Author: gdurtan
 Author URI: https://pl.linkedin.com/pub/grzegorz-durtan/11/b74/296
-Version: 0.0.3
+Version: 0.0.4
 License: GPL2
 */
 
