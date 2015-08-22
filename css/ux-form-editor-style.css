@@ -1,5 +1,5 @@
 /* normalize - delete this section if you wand add editor into WordPress plugins*/
-#form-title{
+/* #form-title{
 	color:#999;
 	border-top:1px dashed #ccc;
 }
@@ -40,10 +40,10 @@ input[type="text"]:focus {
 	height:250px;
 	border:1px solid #ccc;
 	font-size:10px;
-}
+} */
 /* ------------------------------------------------------------ */
 /* extra standalone */
-.helper-item-details select{
+/* .helper-item-details select{
 	border: 1px solid #dcdcdc;
 	background-color: #fff;
 	padding: 3px 1px;
@@ -90,7 +90,7 @@ input[type="text"]:focus {
 	margin-bottom:40px;
 }
 body{font-family:arial;}
-
+ */
 /* ------------------------------------------------------------ */
 ol{
 	margin:0px;

@@ -9,7 +9,7 @@
 	background-color:#fff;
 	/* width:75%; */
 	padding:10px;
-
+	min-height:300px;
 }
 
 .grid-row div{

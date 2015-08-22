@@ -39,12 +39,100 @@
 				foreach ($GRIDS->list_group('grids') as $key) {
 					echo '<div class="grids-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
 				}
+/*				echo '<pre style="font-size:11px">';
+				var_dump($GRIDS->get_all_of_group('grids'));
+				echo '</pre>';*/
 			?>
 			</div>
 		</div>
 	</div>
 	<!-- end main containers -->
 </div>
+
+<script>
+jQuery(document).ready(function($) {
+	function render_grid_group(grid_list){
+		$('#grid-list').children().remove();
+		$.each( grid_list, function( index, value ) {
+		  //alert( index + ": " + value );
+		  $('#grid-list').append('<div class="grids-list-row">'+value+'<div class="dashicons dashicons-trash"></div></div>');
+		});
+	}
+
+	$('#grid-list').on('click','#list_options',function(){
+		$.post(ajaxurl, {
+			action: 'list_group',
+			group_name: 'grids',			
+			security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
+		}, function(response) {
+			console.log(response);
+		});
+	});
+
+	$('#grid-list').on('click','.grids-list-row',function(){
+		$('#grid article').fadeOut();
+		var _text = $(this).text();
+		$('#register-grid-input input').val( '' );
+		$.post(ajaxurl, {
+			action: 'get_option',
+			name: $(this).text(),			
+			security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
+		}, function(response) {
+			console.log('------get-options-------');
+			console.log(response);
+			
+			GRID_CREATOR.grid = response['value'];
+			GRID_CREATOR.reset_schema();
+			GRID_CREATOR.render_blocks();
+
+			$('#register-grid-input input').val( _text );
+			$('#grid article').fadeIn();
+		
+		});
+	});
+
+	$('#grid-list').on('click','.grids-list-row .dashicons-trash',function(e){
+		
+		$('#grid article').fadeOut();
+		e.stopPropagation();
+		$.post(ajaxurl, {
+			action: 'del_option',
+			name: $(this).parent().text(),			
+			security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
+		}, function(response) {
+			
+			render_grid_group(response['group']);
+			GRID_CREATOR.reset_schema();
+			GRID_CREATOR.reset_grid();
+			GRID_CREATOR.render_blocks();
+
+			$('#grid article').fadeIn();
+		});
+
+	});
+
+	$('.save-btn').click(function(){
+		if($('#register-grid-input input').val()==''){
+			
+			alert('name your grid now !!!')
+			return false;
+
+		}else{
+			var value = encodeURIComponent(JSON.stringify( GRID_CREATOR.grid ));
+			$.post(ajaxurl, {
+				action: 'add_option',
+				name: $('#register-grid-input input').val(),	
+				value: value,	
+				autoload: 'no',	
+				encode: 'yes',	
+				security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
+			}, function(response) {
+				render_grid_group(response['group']);
+			});
+		}
+	});
+});
+</script>
 
 <script id="sidebars-list" type="text/x-jquery-tmpl">
 	<div id="sidebar-list-body">

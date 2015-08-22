@@ -16,7 +16,8 @@ class wp_options_manager {
 	/* Constructor */
 	/* ----------------------------------------------------------------------- */
 	public function __construct($options_group_name , $scripts_prefix = 'uigen-om-' ){
-		
+
+			
 		// Chceck prefix
 		if($scripts_prefix != $this->scripts_prefix){
 			$this->scripts_prefix = $scripts_prefix;
@@ -43,7 +44,7 @@ class wp_options_manager {
 			$value = json_decode( urldecode ( $value ), true) ;	
 		}
 
-		$output = add_option( $this->scripts_prefix.$option_name, $value, '', $autoload );
+		$output = update_option( $this->scripts_prefix.$option_name, $value, '', $autoload );
 		
 		// update group
 		$this->options_group[] =  $option_name;
@@ -54,7 +55,7 @@ class wp_options_manager {
 	}
 	public function add_option_ajax(){
 		
-		check_ajax_referer( $this -> scripts_prefix , 'security' );
+		check_ajax_referer( $_SERVER['SERVER_NAME'] , 'security' );
 		wp_send_json (array(
 			'name' => $_POST['name'],
 			'group' => $this -> add_option( $_POST['name'], $_POST['value'], $_POST['autoload'], $_POST['encode'] ),
@@ -72,7 +73,7 @@ class wp_options_manager {
 	}
 	public function get_option_ajax($option_name){
 		
-		check_ajax_referer( $this -> scripts_prefix , 'security' );
+		check_ajax_referer( $_SERVER['SERVER_NAME'] , 'security' );
 		wp_send_json (array(
 			'name' => $_POST['name'],
 			'value' => $this->get_option( $_POST['name'] )
@@ -99,7 +100,7 @@ class wp_options_manager {
 
 	public function del_option_ajax($option_name){
 		
-		check_ajax_referer( $this -> scripts_prefix , 'security' );
+		check_ajax_referer( $_SERVER['SERVER_NAME'] , 'security' );
 
 		wp_send_json (array(
 			'name' => $_POST['name'],
@@ -118,13 +119,25 @@ class wp_options_manager {
 	}
 	public function list_group_ajax(){
 
-		check_ajax_referer( $this -> scripts_prefix , 'security' );
+		check_ajax_referer( $_SERVER['SERVER_NAME'] , 'security' );
 		wp_send_json (array(
 			'group_name' =>  $_POST['group_name'],
 			'options_list' =>  $this->list_group( $_POST['group_name'] )
 		));
 
     }
+
+    public function get_all_of_group($options_group_name){
+	
+		$group = get_option( $this->scripts_prefix.'group-'.$this->options_group_name );
+		$all_group = array();
+		
+		foreach ($group as $key => $value) {
+			$all_group[$value] = $this -> get_option($value);
+		}
+
+		return $all_group;
+	}
 
 	/* ----------Register Ajax methods ----------*/
 	public function register_ajax_methods(){
