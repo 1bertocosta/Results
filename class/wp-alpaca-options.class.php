@@ -71,8 +71,15 @@ class wp_alpaca_options
         }
 
         if($args['render']['type'] != NULL){
-            $args_schema['render'] = $args['render'];
+            $args_schema['render'] = $args['render'];            
             //$args_schema['name'] = $args['render']['widget_handler'];
+        }
+
+        if($args_schema['render']['type'] == 'post_meta'){
+            $run = 'init_post_meta_methods';
+        }
+        if($args_schema['render']['type'] == 'wp_widget'){
+            $run = 'init_widgets_methods';
         }
 
         
@@ -95,13 +102,15 @@ class wp_alpaca_options
                 'form_data' => $this -> get_data($args_schema['data']),
                 'form_schema' => $this -> get_schema($args_schema['schema']),
                 'form_options' => $this -> get_schema($args_schema['options']),
-                'run' => 'init_widgets_methods'
+                'run' => $run
                 ) 
             );
 
-        //echo 'render form instance '.$args_schema['name'].'<br>';
-        //echo '<div style="border:1px solid red" id="'. $this -> storage_object_name . '"></div>';  
-        //echo '<input type="hidden" id="alpaca-data-'. $this -> storage_object_name . '" name="alpaca-data-'. $this -> storage_object_name . '">';  
+        if($args_schema['render']['type'] == 'post_meta'){
+            echo 'render form instance '.$args_schema['name'].'<br>';
+            echo '<div style="border:1px solid red" id="'. $args_schema['name'] . '"></div>';  
+            echo '<input type="hidden" id="alpaca-data-'. $args_schema['name'] . '" name="alpaca-data-'. $args_schema['name'] . '">';  
+        }
     }
 
     public function get_schema($method){
@@ -147,18 +156,7 @@ class wp_alpaca_options
             <input type="hidden" id="<?php echo $id; ?>" name="<?php echo $name; ?>" value="<?php echo esc_attr( $tech_widget_data ); ?>" >
         <?php 
 
-    }
-
-    public function init_alpaca_api_endpoint(){
-
-        function wds_gif_endpoint() {
-         
-            add_rewrite_tag( '%wds_gif%', '([^&]+)' );
-            add_rewrite_rule( 'gifs/([^&]+)/?', 'index.php?wds_gif=$matches[1]', 'top' );
-         
-        }
-        add_action( 'init', 'wds_gif_endpoint' );
-    }
+    }   
 
 
 }

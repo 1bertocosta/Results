@@ -69,6 +69,24 @@
 		init_render_form_with_widget( $('#'+ajax_object['render']['render_handler']) );*/
 	}
 
+	window.init_post_meta_methods = function(){
+		var el_ID = ajax_object['name'];
+		alert(el_ID);
+		alert( ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-options.json");
+		$( "#" + el_ID  ).alpaca({
+			//"data" : ajax_object['data']['base'],
+			"optionsSource": ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-options.json",
+			"schemaSource": ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-schema.json",
+			"postRender": function(renderedForm) {
+				var _target = ajax_object['render']['tech_data_id'];
+				$( '#' + el_ID + ' select, #' + el_ID + ' input, #' + el_ID + ' textarea').live( 'change', function() {
+					_val = renderedForm.getValue();
+					$( '#' +   _target ).val( encodeURIComponent( JSON.stringify( _val )));
+				});
+			}
+		});
+	}
+
 	function render_alpaca(el_ID){
 		/* render alpaca form */
 		$( "#" + el_ID  ).alpaca({
