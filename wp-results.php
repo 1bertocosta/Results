@@ -5,7 +5,7 @@ Plugin URI: https://github.com/dadmor/Results
 Description: Results will be amazing!!!
 Author: gdurtan
 Author URI: https://pl.linkedin.com/pub/grzegorz-durtan/11/b74/296
-Version: 0.0.4
+Version: 0.0.5
 License: GPL2
 */
 
@@ -23,19 +23,21 @@ $ACOL = new admin_column_frontend();
 /* Include class to inject custom templates int wordpress pages */
 include plugin_dir_path( __FILE__ ).'class/virtual-template.class.php';
 
-/* Inclide search and filters class - remove it on another plugin */
+/* Forms */
 include plugin_dir_path( __FILE__ ).'class/wp-alpaca-options.class.php';
+include plugin_dir_path( __FILE__ ).'inc/metabox-alpacajs-form.php';
+
 include plugin_dir_path( __FILE__ ).'class/wp-search-and-filter.class.php';
-include plugin_dir_path( __FILE__ ).'inc/filter-search-widget.php';
+include plugin_dir_path( __FILE__ ).'inc/widget-filter-and-search.php';
 
 /* Inclide search and filters class */
 
 
 /* widget to display loop with sidebars */
 /* result widget remove admin bar ??? */
-//include plugin_dir_path( __FILE__ ).'inc/result-widget.php';
+//include plugin_dir_path( __FILE__ ).'inc/widget-result-list.php';
 
-include plugin_dir_path( __FILE__ ).'inc/cart-widget.php';
+include plugin_dir_path( __FILE__ ).'inc/widget-paypal-cart.php';
 
 /* ADD CUSTOMIZE CONTROLLS TO THIS THEME */
 include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';

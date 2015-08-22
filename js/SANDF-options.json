@@ -13,7 +13,7 @@
                 }, 
                 "key": {
                     "type": "select",
-                    "dataSource": "/work-portal-basic/alpaca/post_metas/",
+                    "dataSource": "/work-portal-basic/wp-result/post-metas/",
                     "removeDefaultNone": true,
                     "dependencies": {
                         "type": "meta_query"
@@ -21,7 +21,7 @@
                 },
                 "tax_name": {
                     "type": "select",
-                    "dataSource": "/work-portal-basic/alpaca/taxonomies/",
+                    "dataSource": "/work-portal-basic/wp-result/taxonomies/",
                     "removeDefaultNone": true,
                     "dependencies": {
                         "type": "tax_query"
