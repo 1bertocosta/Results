@@ -70,6 +70,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$('#grid-list').on('click','.grids-list-row',function(){
+		$('#sidebar-list-body').remove();
 		$('#grid article').fadeOut();
 		var _text = $(this).text();
 		$('#register-grid-input input').val( '' );
@@ -92,7 +93,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$('#grid-list').on('click','.grids-list-row .dashicons-trash',function(e){
-		
+		$('#sidebar-list-body').remove();
 		$('#grid article').fadeOut();
 		e.stopPropagation();
 		$.post(ajaxurl, {

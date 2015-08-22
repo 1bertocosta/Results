@@ -215,8 +215,11 @@ var GRID_CREATOR = {};
 	$('#grid').on('click','.dashicons-admin-links',function(){
 
 
-		$('#grid article').fadeOut();
-		$("#sidebars-list").tmpl({}).appendTo("#grid");
+		//$('#grid article').fadeOut();
+		$('#grid article').fadeOut( 250 , function() {
+		    $("#sidebars-list").tmpl({}).prependTo("#grid");
+		});
+		
 
 		sidebar_target = $(this).closest('section').attr('data-name');
 		if(sidebar_target == 'container'){
