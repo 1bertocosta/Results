@@ -45,12 +45,16 @@
 		<!-- right column -->
 		<div class="three columns">
 			<div class="title">Forms list</div>
-			<div id="grid-list">
+			<div id="group-options-list">
 			<?php
-				global $R_FORMS;
-				foreach ($R_FORMS->list_group('forms') as $key) {
-					echo '<div class="grids-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
+				global $R_OPTIONS;
+
+				foreach ($R_OPTIONS->list_group('forms') as $key) {
+					echo '<div class="options-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
 				}
+/*				echo '<pre style="font-size:11px">';
+				var_dump( $R_OPTIONS->get_all_of_group('grids'));
+				echo '</pre>';*/
 			?>
 			</div>
 		</div>
@@ -278,5 +282,61 @@
 		}
 	});
 
+</script>
+
+<script>
+jQuery(document).ready(function($) {
+	function render_group(list){
+		$('#group-options-list').children().remove();
+		$.each( list, function( index, value ) {
+		  //alert( index + ": " + value );
+		  $('#group-options-list').append('<div class="options-list-row">'+value+'<div class="dashicons dashicons-trash"></div></div>');
+		});
+	}
+
+	$('#group-options-list').on('click','.options-list-row',function(){
+		$('#main_container').children().remove();
+		$('#main_container').fadeOut();
+		var _text = $(this).text();
+		$('#register-grid-input input').val( '' );
+		$.post(ajaxurl, {
+			action: 'get_option',
+			name: $(this).text(),			
+			security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
+		}, function(response) {
+			console.log('------get-options-------');
+			console.log(response);
+			
+			_UXFORM.funcrion_render_alpaca(response['value']);
+
+			$('#register-grid-input input').val( _text );
+			$('#main_container').fadeIn();
+		
+		});
+	});
+	
+	$('.save-btn').click(function(){
+
+		if($('#register-grid-input input').val()==''){
+			
+			alert('name your grid now !!!')
+			return false;
+
+		}else{
+			var value = encodeURIComponent(JSON.stringify( _UXFORM.data ));
+			$.post(ajaxurl, {
+				action: 'add_option',
+				name: $('#register-grid-input input').val(),	
+				value: value,
+				group_name: 'forms',	
+				autoload: 'no',	
+				encode: 'yes',	
+				security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
+			}, function(response) {
+				render_group(response['group']);
+			});
+		}
+	});
+});
 </script>
 

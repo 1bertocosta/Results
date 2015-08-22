@@ -178,10 +178,18 @@ fieldset{
 }
 
 .helper-item-details .label{
-	width:120px; line-height:30px; float:left
+	width: 30%; 
+	line-height:28px; 
+	float:left;
+	padding-right:2%;
+	text-align:right;
 }
 .helper-item-details .label div{
 	font-size:12px;
+}
+.input-helper{
+	width: 67%;
+
 }
 
 .alpaca_container_hover{
@@ -203,8 +211,8 @@ fieldset{
 
 .helper-object-remove{
 	position:absolute;
-	right:5;
-	top:5;
+	right:5px;
+	top:5px;
 	color:#585A5C;
 }
 

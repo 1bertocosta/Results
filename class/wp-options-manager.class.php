@@ -6,7 +6,6 @@ class wp_options_manager {
 	/* Class properties */
 	/* ----------------------------------------------------------------------- */
 	
-	public $options_group_name = '';
 	public $options_group = array();
 	public $scripts_prefix = 'uigen-om-';
 
@@ -15,31 +14,27 @@ class wp_options_manager {
 	/* ####################################################################### */
 	/* Constructor */
 	/* ----------------------------------------------------------------------- */
-	public function __construct($options_group_name , $scripts_prefix = 'uigen-om-' ){
-
+	public function __construct($scripts_prefix = 'uigen-om-' ){
 			
 		// Chceck prefix
 		if($scripts_prefix != $this->scripts_prefix){
 			$this->scripts_prefix = $scripts_prefix;
 		}
-
-		$this->options_group_name = $options_group_name;
-
-		// INIT GROUP	
-		$options_group = get_option( $this->scripts_prefix.'group-'.$this->options_group_name );
-		if($options_group == false){
-			add_option( $this->scripts_prefix.'group-'.$this->options_group_name, array(), '', 'yes' );
-			$options_group = array();
-		}
-		$this->options_group = $options_group;
-
+	
 	}
 	/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 
 	/* ----------Add options Methods ----------*/
 	
-	public function add_option($option_name, $value, $autoload = 'no' , $encode = 'no'){
+	public function add_option($option_name, $value, $options_group_name, $autoload = 'no' , $encode = 'no'){
 
+		$options_group = get_option( $this->scripts_prefix.'group-'.$options_group_name );
+		if($options_group == false){
+			add_option( $this->scripts_prefix.'group-'.$options_group_name, array(), '', 'yes' );
+			$options_group = array();
+		}
+		$this->options_group = $options_group;
+		
 		if($encode='yes'){
 			$value = json_decode( urldecode ( $value ), true) ;	
 		}
@@ -49,7 +44,7 @@ class wp_options_manager {
 		// update group
 		$this->options_group[] =  $option_name;
 		$this->options_group = array_unique ($this->options_group);
-		update_option( $this->scripts_prefix.'group-'.$this->options_group_name, $this->options_group, 'yes');
+		update_option( $this->scripts_prefix.'group-'.$options_group_name, $this->options_group, 'yes');
 
 		return $this->options_group;
 	}
@@ -58,7 +53,7 @@ class wp_options_manager {
 		check_ajax_referer( $_SERVER['SERVER_NAME'] , 'security' );
 		wp_send_json (array(
 			'name' => $_POST['name'],
-			'group' => $this -> add_option( $_POST['name'], $_POST['value'], $_POST['autoload'], $_POST['encode'] ),
+			'group' => $this -> add_option( $_POST['name'], $_POST['value'], $_POST['group_name'], $_POST['autoload'], $_POST['encode'] ),
 		));
 	
 	}	
@@ -82,7 +77,7 @@ class wp_options_manager {
 	}
 	/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */	
 
-	public function del_option( $option_name ){
+	public function del_option( $option_name , $options_group_name){
 
 		delete_option( $this->scripts_prefix . $option_name);
 
@@ -93,18 +88,18 @@ class wp_options_manager {
 		}
 
 
-		update_option( $this->scripts_prefix.'group-'.$this->options_group_name, $this->options_group, 'yes');
+		update_option( $this->scripts_prefix.'group-'.$options_group_name, $this->options_group, 'yes');
 		return $this->options_group;
 
 	}
 
-	public function del_option_ajax($option_name){
+	public function del_option_ajax($option_name, $options_group_name){
 		
 		check_ajax_referer( $_SERVER['SERVER_NAME'] , 'security' );
 
 		wp_send_json (array(
 			'name' => $_POST['name'],
-			'group' => 	$this->del_option( $_POST['name'] )
+			'group' => 	$this->del_option( $_POST['name'], $_POST['group_name'] )
 		));
 	
 	}
@@ -112,9 +107,9 @@ class wp_options_manager {
 
 	/* ----------List Methods ----------*/
 
-	public function list_group($options_group_name){
+	public function list_group( $options_group_name ){
 	
-		return get_option( $this->scripts_prefix.'group-'.$this->options_group_name );
+		return get_option( $this->scripts_prefix.'group-'.$options_group_name );
 	
 	}
 	public function list_group_ajax(){
@@ -129,7 +124,7 @@ class wp_options_manager {
 
     public function get_all_of_group($options_group_name){
 	
-		$group = get_option( $this->scripts_prefix.'group-'.$this->options_group_name );
+		$group = get_option( $this->scripts_prefix.'group-'.$options_group_name );
 		$all_group = array();
 		
 		foreach ($group as $key => $value) {

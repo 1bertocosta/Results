@@ -34,13 +34,13 @@
 			<div class="title">Grid list</div>
 			<div id="grid-list">
 			<?php
-				global $GRIDS;
+				global $R_OPTIONS;
 
-				foreach ($GRIDS->list_group('grids') as $key) {
+				foreach ($R_OPTIONS->list_group('grids') as $key) {
 					echo '<div class="grids-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
 				}
 /*				echo '<pre style="font-size:11px">';
-				var_dump($GRIDS->get_all_of_group('grids'));
+				var_dump( $R_OPTIONS->get_all_of_group('grids'));
 				echo '</pre>';*/
 			?>
 			</div>
@@ -98,6 +98,7 @@ jQuery(document).ready(function($) {
 		e.stopPropagation();
 		$.post(ajaxurl, {
 			action: 'del_option',
+			group_name: 'grids',
 			name: $(this).parent().text(),			
 			security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
 		}, function(response) {
@@ -123,7 +124,8 @@ jQuery(document).ready(function($) {
 			$.post(ajaxurl, {
 				action: 'add_option',
 				name: $('#register-grid-input input').val(),	
-				value: value,	
+				value: value,
+				group_name: 'grids',	
 				autoload: 'no',	
 				encode: 'yes',	
 				security: '<?php echo wp_create_nonce($_SERVER["SERVER_NAME"]); ?>',
@@ -138,7 +140,7 @@ jQuery(document).ready(function($) {
 <script id="sidebars-list" type="text/x-jquery-tmpl">
 	<div id="sidebar-list-body">
 	<h2>Link sidebar with selected block</h2>
-	<p>This is list of sidebars registered to your usage theme (<?php echo get_current_theme(); ?>)</p>
+	<p>This is list of sidebars registered to your usage theme (<?php echo wp_get_theme() -> get( 'Name' ); ?>)</p>
      <?php
      global $wp_registered_sidebars;
      foreach ($wp_registered_sidebars as $key => $value) {

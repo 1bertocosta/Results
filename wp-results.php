@@ -14,11 +14,8 @@ define("PLUGIN_SANDF_URI", plugin_dir_url( __FILE__ ));
 
 /* Include better manage wp options */
 include plugin_dir_path( __FILE__ ).'class/wp-options-manager.class.php';
-$GRIDS = new wp_options_manager('grids');
-$GRIDS -> register_ajax_methods();
-
-$R_FORMS = new wp_options_manager('forms');
-$R_FORMS -> register_ajax_methods();
+$R_OPTIONS = new wp_options_manager();
+$R_OPTIONS -> register_ajax_methods();
 
 include plugin_dir_path( __FILE__ ).'class/admin-column-frontend.class.php';
 $ACOL = new admin_column_frontend();
