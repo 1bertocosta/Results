@@ -12,6 +12,9 @@ At first I'll try show how to create [work portal](https://github.com/dadmor/Res
 
 PS. Project are still in progress and waiting to contributors ;)
 
+[wp_results on WordPress plugins repository](https://wordpress.org/plugins/wp-results).
+
+
 # Main concept
 
 <img src="https://github.com/dadmor/Results/blob/master/github-assets/wp_result_concept.png">
