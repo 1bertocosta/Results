@@ -7,14 +7,14 @@
  */
 
 	$TPL = $VT -> defined_Template;
-	//echo '<pre>';
-	//var_dump('template',$TPL);
-	//echo '</pre>';
+/*	echo '<pre>';
+	var_dump('template',$TPL);
+	echo '</pre>';*/
 ?>
 
 <?php if($TPL['top_header']){ ?>
 	<div class="row">
-		<div class="twelve columns">top_header</div>
+		<div class="twelve columns"><?php my_sidebar( $TPL['top_header'] ); ?></div>
 	</div>
 <?php } ?>
 
@@ -29,11 +29,9 @@
 	<?php } ?>
 
 	<?php 
-		
 
 
 	?>
-	
 	<div class="row">
 		<?php if($TPL['left_bar']){ ?>
 			<div class="<?php echo get_skeleton_class($TPL)->side; ?> columns"><?php my_sidebar( $TPL['left_bar'] ); ?></div>

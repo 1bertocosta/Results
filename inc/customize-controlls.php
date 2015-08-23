@@ -60,14 +60,16 @@ class theme_customizer
             'tag',
             'author',
             'date',
-            'search'
+            'search',
+            'page'
         );
 
-        global $GRIDS;
+        global $R_OPTIONS;
         $grids_list = array('original' => 'Original template');
-        foreach ($GRIDS->options_group as $value) {
-            $grids_list[$value] = $value;
+        foreach ($R_OPTIONS->list_group('grids') as $key) {
+            $grids_list[$key] = $key;
         }
+        //var_dump($grids_list);
 
         foreach ($template_parts_array as $template_part) {
 
@@ -135,6 +137,9 @@ function title_tagline_control_filter( $active, $control ) {
     }
     if ( $control->input_attrs['hierarchy_name'] === 'search'  ) {
         return is_search();
+    }
+    if ( $control->input_attrs['hierarchy_name'] === 'page'  ) {
+        return is_page();
     }
     return true;
 

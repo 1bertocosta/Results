@@ -40,7 +40,8 @@ function WP_Results_forms_meta_box_callback( $post ) {
 			'save' => array( 'save_method' => 'wp_postmeta' ),
 			'run' => 'init_post_meta_methods'			
 		);	
-		$ALPC_FRM_RULEZ -> render_form( $form_args );
+		$output = $ALPC_FRM_RULEZ -> render_form( $form_args );
+		echo $output;
 	}
 }
 function save_alpaca_meta( $post_id, $post ) {
@@ -65,11 +66,17 @@ function WP_RESULTS_forms_Rulez(){
 }
 
 add_action( 'wp', 'process_post' );
-function process_post() {
-    if(is_page()){
-    	global $post;
-		$name = 'FRM_RULEZ';	
 
+function process_post() {
+    
+    if(is_page()){
+		add_filter( 'the_content', 'my_the_content_filter', 20 );
+	}
+
+	function my_the_content_filter( $content ) {
+    
+		global $post;
+		$name = 'FRM_RULEZ';	
 		//var_dump( json_decode(urldecode ( get_post_meta($post->ID,'_alpaca-data-'.$name, true) ), true) );
 
 		$init_paths = array(
@@ -84,10 +91,17 @@ function process_post() {
 
 		$form_args = array(
 			'name' => 'FRM_RULEZ',
-			'render' => array('type' => 'meta_box' ),
-			'save' => array('save_method' => 'post_meta' ),
+			'render' => array('type' => 'wp_metabox' ),
+			'save' => array('save_method' => 'wp_postmeta' ),
 			'run' => 'init_post_meta_methods'			
 		);	
-		$ALPC_FRM_RULEZ -> render_form($form_args);
+		$output = $ALPC_FRM_RULEZ -> render_form($form_args);
+
+	    // Add image to the beginning of each page
+	    $content = $content.$output;
+
+	    // Returns the content.
+	    return $content;
 	}
 }
+

@@ -111,8 +111,9 @@ class wp_alpaca_options
         );
         if($args['render']['type'] == 'wp_metabox'){
             //echo 'render form instance '.$args['name'].'<br>';
-            echo '<div id="'. $args['name'] . '"></div>';  
-            echo '<input type="hidden" id="alpaca-data-'. $args['name'] . '" name="alpaca-data-'. $args['name'] . '">';  
+            $output = '<div id="'. $args['name'] . '"></div>';  
+            $output .= '<input type="hidden" id="alpaca-data-'. $args['name'] . '" name="alpaca-data-'. $args['name'] . '">'; 
+            return $output; 
         }
     }
 

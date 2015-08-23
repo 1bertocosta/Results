@@ -35,7 +35,6 @@
 			<div id="grid-list">
 			<?php
 				global $R_OPTIONS;
-
 				foreach ($R_OPTIONS->list_group('grids') as $key) {
 					echo '<div class="grids-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
 				}

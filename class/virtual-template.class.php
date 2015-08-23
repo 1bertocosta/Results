@@ -27,8 +27,6 @@ class VirtualTemplateForCPT_class
     public function __construct( $pt )
     {      
 
-
-
         $this->pt = $pt;
         $this->url = plugins_url( '', __FILE__ );
         $this->path = plugin_dir_path( __DIR__ );
@@ -88,12 +86,12 @@ class VirtualTemplateForCPT_class
      **/
     public function custom_template( $tpl ) 
     {
-
         global $template;
         $this -> tfname = basename($template, ".php");
 
-        global $GRIDS;
-        $this -> defined_Template = get_option('uigen-om-'.get_theme_mod( 'template_'.$this -> tfname ));
+        global $R_OPTIONS;
+        $this -> defined_Template = $R_OPTIONS->get_option(get_theme_mod( 'template_'.$this -> tfname ));
+
        
         //echo 'Tname init:'.$this -> tfname;
         //$post_types = array( $this->pt );
