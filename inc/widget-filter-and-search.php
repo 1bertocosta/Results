@@ -110,7 +110,7 @@ class R_filter_search_widget extends WP_Widget {
 		$ALPC_SANDF = new wp_alpaca_options($init_paths); 
 
 		$form_args = array(
-			'name' => 'SANDF',
+			'name' => 'SANDF',			
 			'render' => array('type' => 'wp_widget', 'render_handler' => 'widget-'.$this->number .'_'. $this->id_base.'-__i__' )			
 		);	
 

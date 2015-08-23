@@ -14,6 +14,7 @@
 			}catch(e){
 				console.log('%c I cath null request with ajaxComplete action. Sys error name:' +e, 'background: #222; color: orange');
 			}
+			console.log(JSON.stringify(ajax_object));
 			//var request = {}, pairs = ajaxOptions.data.split('&'), i, split, widget;
 			for( i in pairs ) {
 				split = pairs[i].split( '=' );
@@ -72,7 +73,10 @@
 	window.init_post_meta_methods = function(){
 		
 		var el_ID = ajax_object['name'];
-		$( "#" + el_ID  ).alpaca({
+		ajax_object['render']['tech_data_id'] = 'alpaca-data-'+el_ID;
+		ajax_object['data']['base'] = JSON.parse(decodeURIComponent(ajax_object['data']['base']));
+		render_alpaca(el_ID);
+		/*$( "#" + el_ID  ).alpaca({
 			"data" : JSON.parse(decodeURIComponent(ajax_object['form_data'])),
 			"optionsSource": ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-options.json",
 			"schemaSource": ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-schema.json",
@@ -83,7 +87,7 @@
 					$( '#' +   _target ).val( encodeURIComponent( JSON.stringify( _val )));
 				});
 			}
-		});
+		});*/
 	}
 
 	function render_alpaca(el_ID){

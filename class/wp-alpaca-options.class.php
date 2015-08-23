@@ -51,71 +51,68 @@ class wp_alpaca_options
     public function render_form($args = array()) 
     {
 
-        $args_schema = array(
-            'render' => array('type'=>'wp_widget'),
-            'name' => 'SANDF',
-            'paths' =>  $this -> paths,
+        /*  $args_schema = array(
+            'render' => array(
+                'type'=> null // [wp_widget, wp_postmeta] 
+                'render_handler' => null,
+                'id' => null,
+                'tech_data_id' => null
+            ),            
+            'paths' =>  array(
+                'base' => null,
+                'scripts' => null,
+                'styles' => null,
+                'schemas' => null,
+            ),
+            'name' => null,
             'style' => 'alpaca-wpadmin',
-            'schema' => array('storage_method'=>'file','path'=>'js/'),
-            'options' => array('storage_method'=>'file','path'=>'js/'),
-            'data' => array('storage_method'=>'file','path'=>'js/'),
-            'save' => array('save_method'=>'file','path'=>'js/'),
-        );
 
-        if($args['name'] != NULL){
-            $args_schema['name'] = $args['name'];
+            'form_schema' => array('storage_method'=>'file','path'=>'js/'),
+            'form_options' => array('storage_method'=>'file','path'=>'js/'),
+            'run' => 'init_widgets_methods',
+            'data' => array(
+                'storage_method'=>'file', [file,wp_postmeta,wp_options,wp_widget]
+                'path'=>'js/',
+                'base' => null
+            ),
+            'save' => array(
+                'save_method'=>'file', [file,wp_postmeta,wp_options,wp_widget] 
+                'path'=>'js/'
+            ),
+        );*/
+
+
+        /* default style */
+        if($args['style'] == NULL){
+            $args['style'] = 'alpaca-wpadmin';
         }
-
-        if($args['render']['type'] != NULL){
-            $args_schema['render'] = $args['render'];            
-            //$args_schema['name'] = $args['render']['widget_handler'];
+        /* set run callback */
+        if($args['render']['type'] == 'wp_widget'){
+            $args['run'] = 'init_widgets_methods';
         }
+        /* ------------- */
 
-        if($args_schema['render']['type'] == 'meta_box'){
-            $run = 'init_post_meta_methods';
-        }
 
-        if($args_schema['render']['type'] == 'wp_widget'){
-            $run = 'init_widgets_methods';
-        }
 
-        
-
-        /* render type [static,dynamic,widget,metabox]              */
-        /* dynamic + id element to render                           */
-        /*                                                          */
-        /*                                                          */
-        /* storage_method: [file,wp_postmeta,wp_options,wp_widget]  */
-        /* save_method: [file,wp_postmeta,wp_options,wp_widget]     */
-
-        wp_register_style( 'alpaca-admin-style', plugins_url( $this->paths['styles'] . $args_schema['style'] .'.css', dirname(__FILE__) ));
+        wp_register_style( 'alpaca-admin-style', plugins_url( $this->paths['styles'] . $args['style'] .'.css', dirname(__FILE__) ));
         wp_enqueue_style( 'alpaca-admin-style' );
 
         wp_localize_script( 'alpaca-wp-form', 'ajax_object',
-            array( 
-                'render' =>  $args_schema['render'],             
-                'paths' =>  $this -> paths,
-                'name' => $args_schema['name'],
-                'form_data' => $this -> get_data( $args ),
-                'form_schema' => $this -> get_schema($args_schema['schema']),
-                'form_options' => $this -> get_schema($args_schema['options']),
-                'run' => $run
-                ) 
-            );
-
-        if($args_schema['render']['type'] == 'meta_box'){
-            
-            //echo 'render form instance '.$args_schema['name'].'<br>';
-            echo '<div id="'. $args_schema['name'] . '"></div>';  
-            echo '<input type="hidden" id="alpaca-data-'. $args_schema['name'] . '" name="alpaca-data-'. $args_schema['name'] . '">';  
         
-        }
-        
-        if($args['save']['save_method'] == 'post_meta'){
-            // update hooks
-            //global $WP;
-            //add_action( 'save_post',   array( $this, 'update_as_postmeta') );
-             
+        array( 
+            'render' =>  $args['render'],             
+            'paths' =>  $this -> paths,
+            'name' => $args['name'],
+            'form_schema' => $this -> get_schema( $args['schema'] ),
+            'form_options' => $this -> get_schema( $args['options'] ),
+            'data' => array( 'base' => $this -> get_data( $args )),
+            'run' => $args['run']
+            ) 
+        );
+        if($args['render']['type'] == 'wp_metabox'){
+            //echo 'render form instance '.$args['name'].'<br>';
+            echo '<div id="'. $args['name'] . '"></div>';  
+            echo '<input type="hidden" id="alpaca-data-'. $args['name'] . '" name="alpaca-data-'. $args['name'] . '">';  
         }
     }
 
@@ -127,16 +124,14 @@ class wp_alpaca_options
         return $output;
     }
 
-
     /**
      * Get data from database to display into form
      *
      * @return URL string 
      **/
-    public function get_data($args ,$name){
+    public function get_data($args , $name){
         
-        if($args['save']['save_method'] == 'post_meta'){
-           
+        if($args['save']['save_method'] == 'wp_postmeta'){
             global $post;
             $output = get_post_meta($post -> ID, '_alpaca-data-'.$args['name'], true);
             if($output == ''){
@@ -144,25 +139,9 @@ class wp_alpaca_options
             }
             return $output;
         }
-
     }
-    /**
-     * Save form data into postmeta
-     *
-     * @return void
-     **/    
-    public function update_as_postmeta(){
-        //global $post;
-        //var_dump($post);
-        //die();
-/*        $output = add_post_meta($post->ID, '_alpaca-data-'.$this -> storage_object_name, $_POST["alpaca-data-".$this -> storage_object_name], true);
-       
-        if($output == false){
-           update_post_meta($post->ID, '_alpaca-data-'.$this -> storage_object_name, $_POST["alpaca-data-".$this -> storage_object_name]); 
-        }*/
 
-    }
-    public function add_widget_tech_data_field($instance,$id,$name){
+    public function add_widget_tech_data_field( $instance, $id,$name ){
         
         $tech_widget_data = ! empty( $instance['tech_widget_data'] ) ? $instance['tech_widget_data'] : __( '%7B%7D', 'text_domain' );
         ?>
@@ -171,21 +150,16 @@ class wp_alpaca_options
         <?php 
 
     } 
-
-
-
-
 }
 
 /* API */
 function wp_result_save_as_metabox(){
     function wp_result_metabox_save( $post_id ) {
-           // Check if our nonce is set.
+        // Check if our nonce is set.
         var_dump($_POST);
         if ( ! isset( $_POST['myplugin_meta_box_nonce'] ) ) {
             return;
         }
     }
     add_action( 'save_post', 'wp_result_metabox_save' );
-
 }
