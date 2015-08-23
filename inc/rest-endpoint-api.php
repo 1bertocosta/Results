@@ -40,7 +40,10 @@ function alpaca_api_type_endpoint_data() {
       $option = $endpoint[2];
       global $R_OPTIONS;
       if($endpoint[2] == ''){
-        $output = $R_OPTIONS->list_group( $group );
+        $options_list = $R_OPTIONS->list_group( $group );
+        foreach ($options_list as $key => $value) {
+          $output[$key] =  array('text'=>$value, 'value'=>$value);
+        }
       }else{
         $options = $R_OPTIONS->list_group( $group );
         /* check is option in group */

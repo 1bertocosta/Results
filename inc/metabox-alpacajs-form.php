@@ -35,7 +35,7 @@ function WP_Results_forms_meta_box_callback( $post ) {
 		$ALPC_FRM_RULEZ = new wp_alpaca_options($init_paths); 
 
 		$form_args = array(
-			'name' => 'SANDF',
+			'name' => 'FRM_RULEZ',
 			'render' => array('type' => 'meta_box' ),
 			'save' => array('save_method' => 'post_meta' ),
 			'run' => 'init_post_meta_methods'			
@@ -44,7 +44,7 @@ function WP_Results_forms_meta_box_callback( $post ) {
 	}
 }
 function save_alpaca_meta( $post_id, $post ) {
-	$name = 'SANDF';
+	$name = 'FRM_RULEZ';
 	$output = add_post_meta($post_id, '_alpaca-data-'.$name, $_POST["alpaca-data-".$name], true);
 	if($output == false){
 		update_post_meta($post_id, '_alpaca-data-'.$name, $_POST["alpaca-data-".$name]); 
@@ -60,11 +60,31 @@ function WP_RESULTS_forms_Rulez(){
 	target_name: post / if type is posttype
 	},*/
 }
-
-
 add_action( 'wp', 'process_post' );
 function process_post() {
-    if(is_page($post->ID)){
-		echo 'Jestem na stronie i sprawdzam czy mam do wyświetlenia form :)';
+    if(is_page()){
+    	global $post;
+		//echo 'Jestem na stronie i sprawdzam czy mam do wyświetlenia form :)';
+		$name = 'FRM_RULEZ';	
+
+		var_dump( json_decode(urldecode ( get_post_meta($post->ID,'_alpaca-data-'.$name, true) ), true) );
+
+		$init_paths = array(
+			'base' => PLUGIN_SANDF_URI,
+			'scripts' => 'js/',
+			'styles' => 'css/',
+			'schemas' => 'js/'
+		);	
+
+		global $ALPC_FRM_RULEZ;
+		$ALPC_FRM_RULEZ = new wp_alpaca_options($init_paths); 
+
+		$form_args = array(
+			'name' => 'FRM_RULEZ',
+			'render' => array('type' => 'meta_box' ),
+			'save' => array('save_method' => 'post_meta' ),
+			'run' => 'init_post_meta_methods'			
+		);	
+		$ALPC_FRM_RULEZ -> render_form($form_args);
 	}
 }

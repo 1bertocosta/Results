@@ -139,6 +139,9 @@ class wp_alpaca_options
            
             global $post;
             $output = get_post_meta($post -> ID, '_alpaca-data-'.$args['name'], true);
+            if($output == ''){
+                $output = '%7B%7D';
+            }
             return $output;
         }
 
