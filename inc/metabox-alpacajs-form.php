@@ -65,19 +65,21 @@ function WP_RESULTS_forms_Rulez(){
 	},*/
 }
 
-add_action( 'wp', 'process_post' );
 
-function process_post() {
+
+function display_in_post() {
     
     if(is_page()){
 		add_filter( 'the_content', 'my_the_content_filter', 20 );
 	}
 
 	function my_the_content_filter( $content ) {
-    
+
 		global $post;
 		$name = 'FRM_RULEZ';	
-		//var_dump( json_decode(urldecode ( get_post_meta($post->ID,'_alpaca-data-'.$name, true) ), true) );
+		$name = json_decode( urldecode( get_post_meta( $post->ID, '_alpaca-data-' . $name,  true )), true);
+
+		$name = $name['form_name'];
 
 		$init_paths = array(
 			'base' => PLUGIN_SANDF_URI,
@@ -90,8 +92,16 @@ function process_post() {
 		$ALPC_FRM_RULEZ = new wp_alpaca_options($init_paths); 
 
 		$form_args = array(
-			'name' => 'FRM_RULEZ',
-			'render' => array('type' => 'wp_metabox' ),
+			'name' => $name,
+			'render' => array( 'type' => 'wp_metabox' ),
+			'schema' => array(
+				'method' => 'rest', 
+				'url' => get_bloginfo('home').'/wp-result/options-group/forms/'.$name.'/'
+			),
+			'options' => array(
+				'method' => 'rest', 
+				'url' => get_bloginfo('home').'/wp-result/options-group/forms/'.$name.'/'
+			),				
 			'save' => array('save_method' => 'wp_postmeta' ),
 			'run' => 'init_post_meta_methods'			
 		);	
@@ -104,4 +114,5 @@ function process_post() {
 	    return $content;
 	}
 }
+add_action( 'wp', 'display_in_post' );
 

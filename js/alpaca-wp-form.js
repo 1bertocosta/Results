@@ -92,10 +92,10 @@
 
 	function render_alpaca(el_ID){
 		/* render alpaca form */
-		$( "#" + el_ID  ).alpaca({
-			"data" : ajax_object['data']['base'],
-			"optionsSource": ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-options.json",
-			"schemaSource": ajax_object['paths']['base'] + ajax_object['paths']['schemas'] + ajax_object['name'] + "-schema.json",
+		console.log(ajax_object);
+		
+		var alpaca_render_options_object = {
+			"data" : ajax_object['data']['base'],			
 			"postRender": function(renderedForm) {
 				var _target = ajax_object['render']['tech_data_id'];
 				$( '#' + el_ID + ' select, #' + el_ID + ' input, #' + el_ID + ' textarea').live( 'change', function() {
@@ -103,7 +103,23 @@
 					$( '#' +   _target ).val( encodeURIComponent( JSON.stringify( _val )));
 				});
 			}
-		});
+		}
+		if(ajax_object['schema']['method']=='file'){
+			alpaca_render_options_object["optionsSource"] = ajax_object['options']['url'];
+			alpaca_render_options_object["schemaSource"] = ajax_object['schema']['url'];
+			$( "#" + el_ID  ).alpaca(alpaca_render_options_object);
+		}
+		if(ajax_object['schema']['method']=='rest'){
+			/* GET REST JSON from URL */
+			var jqxhr = $.getJSON( ajax_object['schema']['url'], function(data) {
+				alpaca_render_options_object["options"] = data['options'];
+				alpaca_render_options_object["schema"] = data['schema'];
+				$( "#" + el_ID  ).alpaca(alpaca_render_options_object);
+			})					
+			.fail(function() {
+				alert( "load element error" );
+			});
+		}
 	}
 
 	// CALLBACK FUNCTION TO SWITH INIT BY FORM TYPE

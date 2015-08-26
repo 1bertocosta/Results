@@ -67,8 +67,8 @@ class wp_alpaca_options
             'name' => null,
             'style' => 'alpaca-wpadmin',
 
-            'form_schema' => array('storage_method'=>'file','path'=>'js/'),
-            'form_options' => array('storage_method'=>'file','path'=>'js/'),
+            'schema' => array('method'=>'file'),
+            'options' => array('method'=>'file'),
             'run' => 'init_widgets_methods',
             'data' => array(
                 'storage_method'=>'file', [file,wp_postmeta,wp_options,wp_widget]
@@ -81,6 +81,14 @@ class wp_alpaca_options
             ),
         );*/
 
+        /* get schema file */        
+        if(@$args['schema'] == NULL){
+            $args['schema'] = array('method' => 'file');
+        }
+
+        if(@$args['options'] == NULL){
+            $args['options'] = array('method' => 'file');
+        }
 
         /* default style */
         if(@$args['style'] == NULL){
@@ -92,8 +100,6 @@ class wp_alpaca_options
         }
         /* ------------- */
 
-
-
         wp_register_style( 'alpaca-admin-style', plugins_url( $this->paths['styles'] . $args['style'] .'.css', dirname(__FILE__) ));
         wp_enqueue_style( 'alpaca-admin-style' );
 
@@ -103,12 +109,13 @@ class wp_alpaca_options
             'render' =>  $args['render'],             
             'paths' =>  $this -> paths,
             'name' => $args['name'],
-            'form_schema' => @$this -> get_schema( $args['schema'] ),
-            'form_options' => @$this -> get_schema( $args['options'] ),
+            'schema' => @$this -> get_schema( $args ),
+            'options' => @$this -> get_options( $args ),
             'data' => array( 'base' => @$this -> get_data( $args )),
             'run' => $args['run']
             ) 
         );
+
         if(@$args['render']['type'] == 'wp_metabox'){
             //echo 'render form instance '.$args['name'].'<br>';
             $output = '<div id="'. $args['name'] . '"></div>';  
@@ -117,13 +124,20 @@ class wp_alpaca_options
         }
     }
 
-    public function get_schema($method){
-
-        if($method['storage_method'] == 'file'){
-            $output = array('method'=>'file');
-        }
-        return $output;
+    public function get_schema($args){
+        if($args['schema']['method'] == 'file'){
+            $args['schema']['url'] = $this -> paths['base'] . $this -> paths['schemas'] . $args['name'] . "-schema.json";
+        }       
+        return  $args['schema'];
     }
+
+    public function get_options($args){
+        if($args['options']['method'] == 'file'){
+            $args['options']['url'] = $this -> paths['base'] . $this -> paths['schemas'] . $args['name'] . "-options.json";
+        }        
+        return  $args['options'];
+    }
+
 
     /**
      * Get data from database to display into form
