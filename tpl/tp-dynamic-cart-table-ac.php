@@ -20,7 +20,7 @@
 			
 			<div class="wp_list_header_cell" style="">
 				
-				<?php if($data['url']){?><a href="<?php echo $data['url']; ?>"><?php } ?>
+				<?php if(@$data['url']){?><a href="<?php echo @$data['url']; ?>"><?php } ?>
 					
 					<?php if($key == 'title'){
 						$title = $data['value'];
@@ -28,7 +28,7 @@
 
 					<?php echo $data['value'] ?>
 				
-				<?php if($data['url']){?></a><?php } ?>
+				<?php if(@$data['url']){?></a><?php } ?>
 
 			</div>
 		
@@ -41,14 +41,14 @@
 			$counter = 0;
 			foreach ($mappedMetaArray as $key => $value) {
 
-			 if($value['is_array']==true){ 
+			 if(@$value['is_array']==true){ 
 	    		$output = get_post_meta($post->ID,$key,true); 
-	    		$output = $output[key($output)];
+	    		$output = @$output[key($output)];
 	    	 }else{
 	    	 	$output = get_post_meta($post->ID,$key,true); 
 	    	 } 
 
-				if($value['cart_field']== null){
+				if(@$value['cart_field']== null){
 					//$output = $value['array'];
 					//$output = 'japioerdole';
 					?>	

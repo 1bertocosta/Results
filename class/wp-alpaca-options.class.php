@@ -83,11 +83,11 @@ class wp_alpaca_options
 
 
         /* default style */
-        if($args['style'] == NULL){
+        if(@$args['style'] == NULL){
             $args['style'] = 'alpaca-wpadmin';
         }
         /* set run callback */
-        if($args['render']['type'] == 'wp_widget'){
+        if(@$args['render']['type'] == 'wp_widget'){
             $args['run'] = 'init_widgets_methods';
         }
         /* ------------- */
@@ -103,13 +103,13 @@ class wp_alpaca_options
             'render' =>  $args['render'],             
             'paths' =>  $this -> paths,
             'name' => $args['name'],
-            'form_schema' => $this -> get_schema( $args['schema'] ),
-            'form_options' => $this -> get_schema( $args['options'] ),
-            'data' => array( 'base' => $this -> get_data( $args )),
+            'form_schema' => @$this -> get_schema( $args['schema'] ),
+            'form_options' => @$this -> get_schema( $args['options'] ),
+            'data' => array( 'base' => @$this -> get_data( $args )),
             'run' => $args['run']
             ) 
         );
-        if($args['render']['type'] == 'wp_metabox'){
+        if(@$args['render']['type'] == 'wp_metabox'){
             //echo 'render form instance '.$args['name'].'<br>';
             $output = '<div id="'. $args['name'] . '"></div>';  
             $output .= '<input type="hidden" id="alpaca-data-'. $args['name'] . '" name="alpaca-data-'. $args['name'] . '">'; 
@@ -132,7 +132,7 @@ class wp_alpaca_options
      **/
     public function get_data($args , $name){
         
-        if($args['save']['save_method'] == 'wp_postmeta'){
+        if(@$args['save']['save_method'] == 'wp_postmeta'){
             global $post;
             $output = get_post_meta($post -> ID, '_alpaca-data-'.$args['name'], true);
             if($output == ''){

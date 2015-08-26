@@ -85,24 +85,26 @@ add_action( 'wp_enqueue_scripts', 'wp_result_theme_scripts' );
 
 /* dynamic template helpers functions */
 function get_skeleton_class($tpl){
-	if($tpl['results_loop']){
-		if(($tpl['left_bar'])&&($tpl['results_loop'])){
+	$side_class = 'twelve';
+	$loop_class = 'twelve';
+	if(@$tpl['results_loop']){
+		if((@$tpl['left_bar'])&&(@$tpl['results_loop'])){
 			$side_class = 'four';
 			$loop_class = 'eight';	
 		}
-		if(($tpl['right_bar'])&&($tpl['results_loop'])){
+		if((@$tpl['right_bar'])&&(@$tpl['results_loop'])){
 			$side_class = 'four';
 			$loop_class = 'eight';	
 		}
-		if(($tpl['left_bar'])&&($tpl['right_bar'])){
+		if((@$tpl['left_bar'])&&(@$tpl['right_bar'])){
 			$side_class = 'three';
 			$loop_class = 'six';	
 		}
 	}else{
-		if(($tpl['left_bar'])||($tpl['right_loop'])){
+		if((@$tpl['left_bar'])||(@$tpl['right_loop'])){
 			$side_class = 'twelve';
 		}
-		if(($tpl['left_bar'])&&($tpl['right_loop'])){
+		if((@$tpl['left_bar'])&&(@$tpl['right_loop'])){
 			$side_class = 'six';
 		}
 	}

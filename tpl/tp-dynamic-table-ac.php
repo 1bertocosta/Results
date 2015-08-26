@@ -12,11 +12,11 @@
 			
 			<div class="wp_list_header_cell" style="">
 				
-				<?php if($data['url']){?><a href="<?php echo $data['url']; ?>"><?php } ?>
+				<?php if(@$data['url']){?><a href="<?php echo @$data['url']; ?>"><?php } ?>
 					
 					<?php echo $data['value'] ?>
 				
-				<?php if($data['url']){?></a><?php } ?>
+				<?php if(@$data['url']){?></a><?php } ?>
 
 			</div>
 		

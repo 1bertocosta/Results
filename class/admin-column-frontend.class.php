@@ -111,7 +111,7 @@ class admin_column_frontend {
 				$terms = wp_get_post_terms( $post->ID, $type, $args );
 				$my_terms = '';
 				foreach ($terms as $key1 => $value1) {
-					$parsed_data[$key]['value'] .= '<span>'.$value1->name.'</span>  ';
+					@$parsed_data[$key]['value'] .= '<span>'.$value1->name.'</span>  ';
 				}
 			}
 

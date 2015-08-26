@@ -121,11 +121,11 @@ class wp_search_and_filter {
 	public function create_tech_inputs( $schema ){
 
 		$output = '';
-		if($schema[$this -> el_counter]['type']=='meta_query'){
+		if(@$schema[$this -> el_counter]['type']=='meta_query'){
 			$input =  'meta_query['.$this -> meta_counter.'][key]';
 			$output .= '<input type="hidden" name="'.$input.'" value="'.$schema[$this -> el_counter]['key'].'">';
 		}
-		if($schema[$this -> el_counter]['type']=='tax_query'){
+		if(@$schema[$this -> el_counter]['type']=='tax_query'){
 
 			$input =  'tax_query['.$this -> cat_counter.'][taxonomy]';
 			$output .= '<input type="hidden" name="'.$input.'" value="'.$schema[$this -> el_counter]['tax_name'].'">';
@@ -133,7 +133,7 @@ class wp_search_and_filter {
 			$output .= '<input type="hidden" name="'.$input.'" value="'.$schema[$this -> el_counter]['field'].'">';
 		}
 
-		if($schema[$this -> el_counter]['ignore_null']==true){
+		if(@$schema[$this -> el_counter]['ignore_null']==true){
 			$input =  $schema[$this -> el_counter]['type'].'['.$this -> meta_counter.'][ignore_null]';
 			$output .= '<input type="hidden" name="'.$input.'" value="true">';
 		}
@@ -161,11 +161,11 @@ class wp_search_and_filter {
 	public function render_options( $schema ){
 
 		$output = '';
-		if($schema[$this -> el_counter]['ignore_null']==true){
+		if(@$schema[$this -> el_counter]['ignore_null']==true){
 			$output .= '<option value="null">Empty</option>';
 		}
 
-		if($schema[$this -> el_counter]['type']=='tax_query'){
+		if(@$schema[$this -> el_counter]['type']=='tax_query'){
 			$args= array();
 			$terms = get_terms( $schema[$this -> el_counter]['tax_name'], $args );
 
@@ -175,7 +175,7 @@ class wp_search_and_filter {
 			}
 		}
 
-		if($schema[$this -> el_counter]['dictionary']){
+		if(@$schema[$this -> el_counter]['dictionary']){
 			foreach ( $schema[$this -> el_counter]['dictionary'] as $key => $value ) {
 				$output .= '<option value="'. $value .'">'. $value .'</option>';
 			}
