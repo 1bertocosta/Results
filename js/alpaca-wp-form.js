@@ -114,6 +114,7 @@
 			var jqxhr = $.getJSON( ajax_object['schema']['url'], function(data) {
 				alpaca_render_options_object["options"] = data['options'];
 				alpaca_render_options_object["schema"] = data['schema'];
+				console.log(alpaca_render_options_object);
 				$( "#" + el_ID  ).alpaca(alpaca_render_options_object);
 			})					
 			.fail(function() {
@@ -121,6 +122,8 @@
 			});
 		}
 	}
+
+	
 
 	// CALLBACK FUNCTION TO SWITH INIT BY FORM TYPE
 	// all init types declarate on window.fname()

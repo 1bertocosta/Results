@@ -9,7 +9,7 @@
 <link type="text/css" href="css/alpaca-min.css" rel="stylesheet"/>
 <link type="text/css" href="css/ux-form-editop-style.css" rel="stylesheet"/> -->
 
-
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 <div class="container subtitle">Create and define executions for your forms.</div>
 <div class="container grid-app">
 	<!-- top bar with input title and save button -->
@@ -27,17 +27,18 @@
 	<div class="row">	
 		<!-- left column -->
 		<div id="grid_controlls" class="two columns">
-			<a id="add_input" href="#" class="button action">+ ADD FIELD (text)</a><Br/>
-			<!-- <a id="add_select" href="#" class="button action">multi choice</a><Br/>
-			<a id="add_checkbox" href="#" class="button action">single checkbox</a><Br/> -->
-			<a id="add_object" href="#" class="button action">CONTAINER (fieldset)</a><Br/>
+			<a id="add_input" href="#" class="button action" >+ ADD FIELD (text)</a><Br/>
+			<!-- <a id="add_select" href="#" class="button action" style="width:200px; margin-bottom:2px">multi choice</a><Br/>
+			<a id="add_checkbox" href="#" class="button action" style="width:200px; margin-bottom:2px">single checkbox</a><Br/> -->
+			<a id="add_object" href="#" class="button action" >CONTAINER (fieldset)</a><Br/>
 			<a id="add_array" href="#" class="button action">REPEATER (array)</a><Br/>
 			<div style="line-height:40px">WordPress Templates</div>
-			<a id="add_model_insert_post" href="#" class="button action">wp_mail</a><Br/>
-			<a id="add_model_insert_post" href="#" class="button action">wp_insert_post</a><Br/>
-			<a id="add_model_insert_post" href="#" class="button action">wp_insert_user</a><Br/>
-			<a id="add_model_insert_post" href="#" class="button action">wp_signon</a><Br/>
-			<a id="add_model_insert_post" href="#" class="button action">wp_redirect</a><Br/>
+			<a href="#" class="button action new_element" data-object-name="wp_mail" data-type="object-schema" >wp_mail</a><Br/>
+			<a href="#" class="button action new_element" data-object-name="wp_insert_post" data-type="object-schema" >wp_insert_post</a><Br/>
+
+			<a id=".add_model_insert_post" href="#" class="button action" >wp_insert_user</a><Br/>
+			<a id=".add_model_insert_post" href="#" class="button action" >wp_signon</a><Br/>
+			<a id=".add_model_insert_post" href="#" class="button action" >wp_redirect</a><Br/>
 		</div>
 		<!-- middle column -->
 		<div id="main_container" class="seven columns u-max-width">
@@ -90,13 +91,11 @@
 		<div class="context-mnu-item">Dependency</div>
 		<div class="context-mnu-item">WP Action</div>
 	</div>
-	<div class="helper-items-body" style="width:80%; float:right">
-		<label class="label">name</label>
-		<input class="input-helper" type="text" name="name" data-type="shema-key">
+	<div class="helper-items-body" style="width:70%; float:right">
+		
 	</div>
 	<br style="clear:both">
 	</div>
-
 </script>
 
 <script id="helper-input-tpl" type="text/x-jquery-tmpl">
@@ -105,183 +104,27 @@
 </script>
 
 <script type="text/javascript">
+window.wp_result_json_path = '<?php echo PLUGIN_SANDF_URI; ?>';
+jQuery(document).ready(function($) {
+<?php if(@$_POST["schema_output"] != ''){ ?>
 
-	jQuery(document).ready(function($) {
+	window.post_options = <?php echo stripslashes(@$_POST["options_output"]); ?>;
+	window.post_schema = <?php echo stripslashes(@$_POST["schema_output"]); ?>;
+	var data = {
+		"options":window.post_options,
+		"schema": window.post_schema, 
+		"view":"VIEW_WEB_DISPLAY_LIST",
+		
+	}
+	_UXFORM.funcrion_render_alpaca(data);
 
-		window.update_textareas = function(options,schema){
-			$("#schema_output").text(JSON.stringify(schema));
-			$("#options_output").text(JSON.stringify(options));
-		}
+<?php }else{ ?>
 
-		/* ACTIONS EVENTS HANDLERS */
+	/* standard init method */
+		_UXFORM.funcrion_render_alpaca(_UXFORM.data);
 
-		$(document).on("click", "div .helper-object-remove", function(e) { 
-			
-			e.stopPropagation();
-
-			_UXFORM.paths_helper.keys_array = [];
-			_UXFORM.get_paths( $(this).parent() );
-			_UXFORM.remove_element( $(this).parent() );
-			
-		});
-
-		$(document).on("click", "li.alpaca-fieldset-item-container", function(e) { 
-		//$(".alpaca-fieldset-item-container").live('click', function(e) {
-			e.stopPropagation();
-
-			if( $(this).hasClass('alpaca_container_selected') ){
-				$(this).find('.helper-item-details').remove();
-			}else{
-				_UXFORM.render_field_options($(this));
-			}
-
-			_UXFORM.paths_helper.keys_array = [];
-			_UXFORM.get_paths( $(this) );
-
-			_UXFORM.colorize_path(_UXFORM.paths_helper.keys_array);
-
-			$('html, body').animate({
-		        scrollTop: parseInt($(this).offset().top) - 20
-		    }, 300);
-
-	    });
-
-		$(document).on("click", "div.helper-item-details", function(e) { 
-		//$(".helper-item-details").live('click', function(e) {                 
-	        e.stopPropagation();
-	    });
-
-	    $('#add_input').click(function(){
-		    _UXFORM.add_new_element('string','');
-		});
-
-		$('#add_select').click(function(){
-			_UXFORM.add_new_element('string',['option1','option2','option3']);
-		});
-
-		$('#add_checkbox').click(function(){
-			_UXFORM.add_new_element( 'boolean' , '' );
-		});
-
-		$('#add_object').click(function(){
-			_UXFORM.add_new_element( 'object' , '' );
-		});
-
-		$('#add_array').click(function(){
-			_UXFORM.add_new_element( 'array' , '' );
-		});
-
-		$(document).on("change", "input.input-helper", function(e) { 
-			
-			if($(this).attr('data-type') == 'option'){				
-				_UXFORM.add_option_value($(this), $(this).attr('name'));
-			}
-			if($(this).attr('data-type') == 'shema-key'){
-				var output = _UXFORM.rename_schema_key($(this));
-			}
-			window.update_textareas(_UXFORM.data.options,_UXFORM.data.schema);
-
-		});
-
-		/* INIT  */
-	    
-	    <?php if(@$_POST["schema_output"] != ''){ ?>
-			
-			var data = {
-				"options":<?php echo $_POST["options_output"]; ?>,
-				"schema": <?php echo $_POST["schema_output"]; ?>, 
-				"view":"VIEW_WEB_DISPLAY_LIST"
-			}
-			_UXFORM.funcrion_render_alpaca(data);
-	    
-	    <?php }else{ ?>
-
-	    	/* standard init method */
- 			_UXFORM.funcrion_render_alpaca(_UXFORM.data);
-
-	    <?php } ?>
-
-	    window.run_sortable = function(){
-
-    		
-
-	    }
-
-
-		window.wordpress_autocomple_names = function (data){
-			/* WORDPRESS names mapping */
-			dictionary = {
-				'wp_actions':[
-					'wp_mail',
-					'wp_insert_comment',
-					'wp_insert_post',
-					'wp_insert_user',
-					'wp_signon',
-					'wp_redirect',
-					'register_post_type'
-				],
-				'wp_insert_post':[
-					'post_content',
-					'post_name',
-					'post_title',
-					'post_status',
-					'post_type',
-					'post_author',
-					'ping_status',
-					'default_ping_status',
-					'post_parent',
-					'menu_order',
-					'to_ping',
-					'pinged',
-					'post_password',
-					'guid',
-					'post_content_filtered',
-					'post_excerpt',
-					'post_date_gmt',
-					'comment_status',
-					'post_category',
-					'tags_input',
-					'tax_input',
-					'page_template'
-				],
-				'wp_insert_user':[
-					'user_pass',
-					'user_login',
-					'user_nicename',
-					'user_url',
-					'user_email',
-					'display_name',
-					'nickname',
-					'first_name',
-					'last_name',
-					'description',
-					'rich_editing',
-					'user_registered',
-					'role',
-					'jabber',
-					'aim',
-					'yim'
-				]
-			};
-
-		    $( "input[name='name']" ).autocomplete({
-		      source: dictionary[data],
-		      close: function( event, ui ) {
-		      	console.log(event);
-		        if($(this).attr('data-type') == 'shema-key'){
-					
-					var output = _UXFORM.rename_schema_key($(event.target));
-					$(event.target).parents('li').find('.helper-object-key').text(output);
-					/* OR */
-					$(event.target).parents('li').find('.alpaca-fieldset-legend').children('.title').text(output);
-					
-				}
-				window.update_textareas(_UXFORM.data.options,_UXFORM.data.schema);
-		      },
-		    });
-		}
-	});
-
+<?php } ?>
+});
 </script>
 
 <script>
@@ -293,7 +136,6 @@ jQuery(document).ready(function($) {
 		  $('#group-options-list').append('<div class="options-list-row">'+value+'<div class="dashicons dashicons-trash"></div></div>');
 		});
 	}
-
 	$('#group-options-list').on('click','.options-list-row',function(){
 		$('#main_container').children().remove();
 		$('#main_container').fadeOut();
@@ -308,7 +150,6 @@ jQuery(document).ready(function($) {
 			console.log(response);
 			
 			_UXFORM.funcrion_render_alpaca(response['value']);
-
 			$('#register-grid-input input').val( _text );
 			$('#main_container').fadeIn();
 		
@@ -316,12 +157,10 @@ jQuery(document).ready(function($) {
 	});
 	
 	$('.save-btn').click(function(){
-
 		if($('#register-grid-input input').val()==''){
 			
 			alert('name your grid now !!!')
 			return false;
-
 		}else{
 			var value = encodeURIComponent(JSON.stringify( _UXFORM.data ));
 			$.post(ajaxurl, {

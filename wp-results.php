@@ -25,6 +25,7 @@ include plugin_dir_path( __FILE__ ).'class/virtual-template.class.php';
 
 /* Forms */
 include plugin_dir_path( __FILE__ ).'class/wp-alpaca-options.class.php';
+include plugin_dir_path( __FILE__ ).'class/wp-executor.class.php';
 include plugin_dir_path( __FILE__ ).'inc/metabox-alpacajs-form.php';
 
 include plugin_dir_path( __FILE__ ).'class/wp-search-and-filter.class.php';
@@ -73,7 +74,7 @@ function add_parts_callback() {
 function add_forms_callback(){
 	wp_enqueue_script('jquery-ui-sortable');
 
-	wpr_reg_scripts( array( 'alpaca-core.min', 'lodash', 'lodash-deep', 'alpacajs-ux-form-editor' ));
+	wpr_reg_scripts( array( 'alpaca-core.min', 'lodash', 'lodash-deep', 'alpacajs-ux-form-editor', 'alpacajs-ux-form-editor-init' ));
 	wpr_reg_styles( array('alpaca.min', 'ux-form-editor-style', 'skeleton-grid-creator', 'grid-creator' ));
 	wpr_admin_page('ux-form-builder', 'WP Results Form Builder' );
 }

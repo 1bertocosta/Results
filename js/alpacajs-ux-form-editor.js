@@ -1,11 +1,10 @@
 var _UXFORM = {};
-( function( $ ) {
+(function($){
 		/* short nodes references */
 		_fs = '.alpaca-fieldset';
 		_ic = '.alpaca-fieldset-item-container';
 		_ic_key = 'data-alpaca-item-container-item-key';
 		_dfc = 'data-first-container';
-			
 		
 		/* ----------------------------------- */
 		/* ALPACAJS UX EDITOR CLASS version 1.0  */
@@ -51,7 +50,16 @@ var _UXFORM = {};
 					_this.colorize_path(_this.paths_helper.keys_array);
 					
 					/* sortable */
-					$( "#main_container ol" ).sortable();
+					$( "#main_container ol" ).sortable({
+					  start: function( event, ui ) {
+					  	$(this).css({'background-color':'#FDFFC7', 'outline': '#FDFFC7 solid 10px'});
+
+					  },
+					  stop: function( event, ui ) {
+					  	$(this).css({'background-color':'#fff', 'outline': 'none'});
+					  },
+
+					});
 					$( "#main_container ol" ).disableSelection();
 				
 				}
@@ -69,7 +77,7 @@ var _UXFORM = {};
 					}else{
 						$( this ).html('<div class="helper-object-key">'+$(this).attr(_ic_key)+'</div>');
 					}
-					$( this ).append('<div class="helper-object-remove">[remove]</div>')
+					$( this ).append('<div class="helper-object-properties"><i class="fa fa-cogs"></i></div> <div class="helper-object-remove"><i class="fa fa-trash"></i></div>' )
 				});
 			},
 			colorize_path : function(path){
@@ -77,70 +85,51 @@ var _UXFORM = {};
 					return false;
 				};
 				path.reverse();
-				$("#main_container li").removeClass('alpaca_container_selected');
-				$("#main_container li["+_ic_key+"='" + path[0] + "']" ).addClass('alpaca_container_selected');
+				//$("#main_container li").removeClass('alpaca_container_selected');
+				//$("#main_container li["+_ic_key+"='" + path[0] + "']" ).addClass('alpaca_container_selected');
 			},
-
 			/* ------------------------------------------------------ */
 			/* ELEMENT PROPERTIES FORM -------------------------------*/
 			render_field_options : function(_this){
+
+				// _this -> $(this)
+				var __this = this;
 				var targetPath = this.paths_helper.acctual_options_path;
-				var tease_array = [
-					{	
-						'label':'label',
-						'name':'label',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.label')
-					},{
-						'label':'placeholder',
-						'name':'placeholder',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.placeholder')
-					},{							
-						'label':'helper',
-						'name':'helper',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.helper')
-					},{							
-						'label':'inputType',
-						'name':'inputType',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.inputType')
-					},{							
-						'label':'maskString',
-						'name':'maskString',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.maskString')
-					},{							
-						'label':'size',
-						'name':'size',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.size')
-					},{							
-						'label':'type',
-						'name':'type',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.type')
-					},{							
-						'label':'fieldClass',
-						'name':'fieldClass',
-						'type':'option',
-						'value':this.get_option_value(targetPath+'.fieldClass')
-					}
-					];
-				$('.alpaca-fieldset-item-container .helper-item-details').remove();
-				$('#helper-container-tpl').tmpl([{}]).appendTo(_this);
-				
-				$(_this).css('display','none');
-				$(_this).css('opacity', 0)
-				
-				$('#helper-input-tpl').tmpl(tease_array).appendTo(_this.find('.helper-items-body'));
-				
-				$(_this).slideDown(100);
-				$(_this).animate(
-					{ opacity: 1 },
-					{ queue: false, duration: 300 }
-				);
+
+				/* GET REST JSON from URL */
+				var jqxhr = $.getJSON( window.wp_result_json_path + "json/editor-properties-fields.json", function(data) {
+					var tease_array = data;
+					$.each(tease_array, function( index, value ) {
+						if(value['value'] == 'key'){
+							tease_array[index]['value'] = __this.get_last_from_path(__this.paths_helper.acctual_schema_path);
+						}
+						if(value['value'] == 'option-value'){
+							tease_array[index]['value'] = __this.get_option_value(targetPath+'.'+value['name']) 
+						}
+					});
+					$('.alpaca-fieldset-item-container .helper-item-details').remove();
+
+					$('#helper-container-tpl').tmpl([{}]).appendTo(_this);
+					
+					$(_this).css('display','none');
+					$(_this).css('opacity', 0)
+					
+					$('#helper-input-tpl').tmpl(tease_array).appendTo(_this.find('.helper-items-body'));
+
+					$('html, body').animate({
+						scrollTop: parseInt(_this.offset().top) - 20
+					}, 500);
+					
+					$(_this).slideDown(100);
+					$(_this).animate(
+						{ opacity: 1 },
+						{ queue: false, duration: 300 }
+					);	
+
+				})					
+				.fail(function() {
+					alert( "load element error" );
+				});
 
 				/* init wordpress extentions */
 				
@@ -181,63 +170,89 @@ var _UXFORM = {};
 				}
 			},
 
-			add_new_element : function( type, _enum ){
+			add_new_element : function( type, object_name ){
+				
+				$('#main_container').children().remove();
+				this.fields_counter ++;
 				
 				var rnd = Math.floor(Math.random() * 899999) + 100000;
 				var element_name = "id_" + rnd; // + "_" + this.fields_counter;
 				
+				
+				if(type == 'string'){	
+					var path = this.create_path_to_new_element( element_name );				
+					_.deepSet(this.data, path['schema_path'] + '.type', type);
+					this.funcrion_render_alpaca(this.data);
+				}
+				if(type == 'object'){
+					var path = this.create_path_to_new_element( element_name );
+					_.deepSet(this.data, path['schema_path'] + '.type', type);
+					_.deepSet(this.data, path['schema_path'] +'.title', "Object title");
+					_.deepSet(this.data, path['schema_path'] +'.properties', false);
+					this.funcrion_render_alpaca(this.data);
+				}
+
+				if(type == 'array'){
+					var path = this.create_path_to_new_element( element_name );
+					_.deepSet(this.data, path['schema_path'] +'.type', type);
+					_.deepSet(this.data, path['schema_path'] +'.items', false);
+					_.deepSet(this.data, path['schema_path'] +'.items.type', 'object');
+					_.deepSet(this.data, path['schema_path'] +'.items.properties', 'false');
+					this.funcrion_render_alpaca(this.data);
+				}
+
+				if(type == 'object-schema'){					
+					
+					var _this = this;
+					var path = _this.create_path_to_new_element( object_name );
+					var schema = {
+						'post_title':{'type':'string','title':'Insert post title'},
+						'post_excerpt':{'type':'string','title':'Insert post excerpt'},
+						'post_content':{'type':'string','title':'Insert post content'}
+					};
+
+					/* GET REST JSON from URL */
+					var jqxhr = $.getJSON( window.wp_result_json_path + "json/"+object_name+"-schema.json", function(data) {
+						
+						_.deepSet(_this.data, path['schema_path'] +'.type', 'object');
+						_.deepSet(_this.data, path['schema_path'] +'.title', "Object title");
+						_.deepSet(_this.data, path['schema_path'] +'.properties', data);
+						_this.funcrion_render_alpaca(_this.data);
+					
+					})					
+					.fail(function() {
+						alert( "load element error" );
+					});
+				}
+			},
+			create_path_to_new_element: function(element_name){
 				/* Update json data (schema) */
 				schema_path = this.paths_helper.acctual_schema_path;
 				options_path = this.paths_helper.acctual_schema_path;
 				
 				if( this.selected_type == 'object' ){
+					
 					schema_path += '.properties.';
 					options_path += '.fields.';
+
 				}else{
 					if(this.selected_type != ''){
 						/* if selected textfield remove last key from path */
-						var rem = schema_path.split(".");
-						rem.pop();
-						schema_path = rem.join(".");
-						schema_path+='.';
-
-						var rem = options_path.split(".");
-						rem.pop();
-						options_path = rem.join(".");
-						options_path+='.';
+						schema_path = this.get_path_without_last(schema_path) + '.';
+						options_path = this.get_path_without_last(options_path) + '.';
 					}
 				}
-
-				schema_path += element_name;
-				options_path += element_name;
-
-				_.deepSet(this.data, schema_path+'.type', type);
-				
-				if(_enum != ''){
-					_.deepSet(this.data, schema_path+'.enum', _enum);
-				}
-
-				if(type == 'object'){
-					_.deepSet(this.data, schema_path+'.type', type);
-					_.deepSet(this.data, schema_path+'.title', "Object title");
-					_.deepSet(this.data, schema_path+'.properties', false);
-				}
-
-				if(type == 'array'){
-					_.deepSet(this.data, schema_path+'.type', type);
-					_.deepSet(this.data, schema_path+'.items', false);
-					_.deepSet(this.data, schema_path+'.items.type', 'object');
-					_.deepSet(this.data, schema_path+'.items.properties', 'false');
-				}
-				this.fields_counter ++;
-				$('#main_container').children().remove();
-				this.funcrion_render_alpaca(this.data);
+				var path = {};
+				path['schema_path'] = schema_path + element_name;
+				path['options_path'] = options_path + element_name;
+				return path;   
 			},
 
 			remove_element : function( _this ){
 				/* get parent to set path on parent */
 				var parent = _this.closest('li');
 				this.deepDelete(this.paths_helper.acctual_schema_path, this.data);
+				this.deepDelete(this.paths_helper.acctual_options_path, this.data);
 				$('#main_container').children().remove();
 				this.funcrion_render_alpaca(this.data);
 				this.get_paths( parent );
@@ -251,7 +266,6 @@ var _UXFORM = {};
 				else
 				delete context[target];
 			},
-
 
 			// CREARTE ALPACA PATHS METHODS
 			get_paths : function(_this){
@@ -300,14 +314,26 @@ var _UXFORM = {};
 
 				var new_name = _this.val();
 				var old_name = _this.parents('li').attr( _ic_key );
-				var colection = this.get_parents_colection( this.paths_helper.acctual_schema_path );
-				var position = this.get_index_by_key( colection, old_name );
-				var new_colection = this.add_object_between_colection( colection, position, new_name, colection[old_name] );
+				
+				var schema_colection = this.get_parents_colection( this.paths_helper.acctual_schema_path );
+				var position = this.get_index_by_key( schema_colection, old_name );
+				var new_schema_colection = this.add_object_between_colection( schema_colection, position, new_name, schema_colection[old_name] );
 				var path_to_set = this.get_path_without_last( this.paths_helper.acctual_schema_path );
 				
-				_.deepSet( this.data, path_to_set, new_colection );
+				_.deepSet( this.data, path_to_set, new_schema_colection );
 				this.deepDelete(this.paths_helper.acctual_schema_path, this.data);
-				//alert('finished here');
+
+				var options_colection = this.get_parents_colection( this.paths_helper.acctual_options_path );
+				if(options_colection != undefined){
+					var position = this.get_index_by_key( options_colection, old_name );
+					var new_options_colection = this.add_object_between_colection( options_colection, position, new_name, options_colection[old_name] );
+					var path_to_set = this.get_path_without_last( this.paths_helper.acctual_options_path );
+					
+					_.deepSet( this.data, path_to_set, new_options_colection );
+					this.deepDelete(this.paths_helper.acctual_options_path, this.data);
+				}
+
+				return new_name;
 			},
 
 			/* KEY COLECTIONS */
@@ -355,28 +381,7 @@ var _UXFORM = {};
 
 				return _.merge(first_object, added_object, last_object);
 
-			},
-
-
-			rename_schema_key2 : function( _this ){
-				
-				var new_name = _this.val();
-				var old_name = _this.parents('li').attr(_ic_key);
-
-				var temp_node  = _.deepGet(this.data, this.paths_helper.acctual_schema_path);
-				this.deepDelete(this.paths_helper.acctual_schema_path, this.data);
-
-				var rem = this.paths_helper.acctual_schema_path.split(".");
-				rem.pop();
-				var schema_path = rem.join(".");
-				//schema_path += '.';
-				
-				_.deepSet(this.data, schema_path + '.' + new_name, temp_node);
-
-				return new_name;
-				
 			}
-
 		};
 		/* ----------------------------------- */
-} )( jQuery );
+})(jQuery)

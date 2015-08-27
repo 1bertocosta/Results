@@ -70,6 +70,9 @@ function WP_RESULTS_forms_Rulez(){
 function display_in_post() {
     
     if(is_page()){
+		
+
+		
 		add_filter( 'the_content', 'my_the_content_filter', 20 );
 	}
 
@@ -78,8 +81,19 @@ function display_in_post() {
 		global $post;
 		$name = 'FRM_RULEZ';	
 		$name = json_decode( urldecode( get_post_meta( $post->ID, '_alpaca-data-' . $name,  true )), true);
-
 		$name = $name['form_name'];
+		
+		if($_POST['alpaca-data-'.$name] != ''){
+			
+			//var_dump( json_decode( urldecode( $_POST['alpaca-data-'.$name] ), true));
+			
+			$execution = array('main_frame'=>array('input' => true, 'output' => true));			
+			$execution['main_frame']['input']  =  json_decode( urldecode( $_POST['alpaca-data-'.$name] ), true);
+			
+			$WP_EXE = new wp_executor(); 
+			$WP_EXE -> execute('main_frame', $execution);
+
+		}
 
 		$init_paths = array(
 			'base' => PLUGIN_SANDF_URI,
@@ -102,7 +116,7 @@ function display_in_post() {
 				'method' => 'rest', 
 				'url' => get_bloginfo('home').'/wp-result/options-group/forms/'.$name.'/'
 			),				
-			'save' => array('save_method' => 'wp_postmeta' ),
+			'save' => array('save_method' => 'wp_postmeta' , 'submit' => 'true'),
 			'run' => 'init_post_meta_methods'			
 		);	
 		$output = $ALPC_FRM_RULEZ -> render_form($form_args);
