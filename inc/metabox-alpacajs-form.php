@@ -70,9 +70,6 @@ function WP_RESULTS_forms_Rulez(){
 function display_in_post() {
     
     if(is_page()){
-		
-
-		
 		add_filter( 'the_content', 'my_the_content_filter', 20 );
 	}
 
@@ -82,18 +79,7 @@ function display_in_post() {
 		$name = 'FRM_RULEZ';	
 		$name = json_decode( urldecode( get_post_meta( $post->ID, '_alpaca-data-' . $name,  true )), true);
 		$name = $name['form_name'];
-		
-		if($_POST['alpaca-data-'.$name] != ''){
-			
-			//var_dump( json_decode( urldecode( $_POST['alpaca-data-'.$name] ), true));
-			
-			$execution = array('main_frame'=>array('input' => true, 'output' => true));			
-			$execution['main_frame']['input']  =  json_decode( urldecode( $_POST['alpaca-data-'.$name] ), true);
-			
-			$WP_EXE = new wp_executor(); 
-			$WP_EXE -> execute('main_frame', $execution);
 
-		}
 
 		$init_paths = array(
 			'base' => PLUGIN_SANDF_URI,
@@ -110,7 +96,7 @@ function display_in_post() {
 			'render' => array( 'type' => 'wp_metabox' ),
 			'schema' => array(
 				'method' => 'rest', 
-				'url' => get_bloginfo('home').'/wp-result/options-group/forms/'.$name.'/'
+				'url' => get_bloginfo('home').'/wp-result/options-group/forms/'.$name.'/',
 			),
 			'options' => array(
 				'method' => 'rest', 
@@ -119,6 +105,51 @@ function display_in_post() {
 			'save' => array('save_method' => 'wp_postmeta' , 'submit' => 'true'),
 			'run' => 'init_post_meta_methods'			
 		);	
+		
+			
+				
+		
+		/* recive form data */
+		if($_POST['alpaca-data-'.$name] != ''){
+			
+			//var_dump( json_decode( urldecode( $_POST['alpaca-data-'.$name] ), true));
+
+			// check is sending data mathed with schema
+			global $R_OPTIONS;
+			$original_schema = $R_OPTIONS->get_option($name);
+			$original_schema = $original_schema['schema']['properties'];
+			$data_to_process = json_decode( urldecode( $_POST['alpaca-data-'.$name] ), true);
+
+			/*echo '<pre>';
+			var_dump($original_schema);
+			echo '</pre>';
+
+			echo '<pre>';
+			var_dump($data_to_process);
+			echo '</pre>';*/
+
+			// Security exerption. Math arrays - serwer schema with sending data object
+			$result = array_diff_key($original_schema, $data_to_process);
+			//var_dump($result);
+			if(sizeof($result) != 0){
+				echo '<b>We have some litle problem and I stop this process. </b></br>';
+				echo 'Your sending form dont math with internal schema. </br>';
+				echo 'This is security excerption and i dont save this data. Iam sorry.';
+				die();
+			};
+
+
+			
+			$execution = array('main_frame'=>array('input' => true, 'output' => true));			
+			$execution['main_frame']['input']  =  $data_to_process;
+			
+			$WP_EXE = new wp_executor(); 
+			$WP_EXE -> execute('main_frame', $execution);
+
+		}
+
+
+		
 		$output = $ALPC_FRM_RULEZ -> render_form($form_args);
 
 	    // Add image to the beginning of each page

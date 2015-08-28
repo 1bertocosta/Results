@@ -1,5 +1,7 @@
 # WP RESULTS WordPress plugin
 
+WARNING - plugin is under construction. Dont use in on your production WordPress !!!!
+
 The mission of this project is to enable creating web applications by only few clicks. 
 "Wp Results" consists of two main modules:
 
