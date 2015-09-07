@@ -35,10 +35,11 @@ class wp_alpaca_options
         }
         $this -> paths = $paths;
 
-        wp_register_script( 'alpaca-core', plugins_url( $this -> paths['scripts'] . 'alpaca-core.min.js', dirname(__FILE__) ) , array('jquery'));
+        wp_register_script( 'handlebars', plugins_url( $this -> paths['scripts'] . 'handlebars.min.js', dirname(__FILE__) ) );
+        wp_register_script( 'alpaca', plugins_url( $this -> paths['scripts'] . 'alpaca.js', dirname(__FILE__) ) , array('jquery','handlebars'));
         //wp_register_script( 'alpaca-js', plugins_url( $this->path . 'alpaca.min.js', dirname(__FILE__) ) , array('jquery'));
         
-        wp_register_script( 'alpaca-wp-form', plugins_url( $this -> paths['scripts'] . 'alpaca-wp-form.js', dirname(__FILE__) ), array('alpaca-core'));
+        wp_register_script( 'alpaca-wp-form', plugins_url( $this -> paths['scripts'] . 'alpaca-wp-form.js', dirname(__FILE__) ), array('alpaca'));
         wp_enqueue_script( 'alpaca-wp-form' );
        
     }

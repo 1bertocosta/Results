@@ -50,7 +50,7 @@
 			<?php
 				global $R_OPTIONS;
 
-				foreach ($R_OPTIONS->list_group('forms') as $key) {
+				foreach ($R_OPTIONS -> list_group('forms') as $key) {
 					echo '<div class="options-list-row">'.$key.'<div class="dashicons dashicons-trash"></div></div>';
 				}
 /*				echo '<pre style="font-size:11px">';
@@ -106,24 +106,23 @@
 <script type="text/javascript">
 window.wp_result_json_path = '<?php echo PLUGIN_SANDF_URI; ?>';
 jQuery(document).ready(function($) {
-<?php if(@$_POST["schema_output"] != ''){ ?>
+	<?php if(@$_POST["schema_output"] != ''){ ?>
+		window.post_options = <?php echo stripslashes(@$_POST["options_output"]); ?>;
+		window.post_schema = <?php echo stripslashes(@$_POST["schema_output"]); ?>;
+		var data = {
+			"options":window.post_options,
+			"schema": window.post_schema, 
+			"view":"my-view"			
+		}
+		_UXFORM.funcrion_render_alpaca(data);
 
-	window.post_options = <?php echo stripslashes(@$_POST["options_output"]); ?>;
-	window.post_schema = <?php echo stripslashes(@$_POST["schema_output"]); ?>;
-	var data = {
-		"options":window.post_options,
-		"schema": window.post_schema, 
-		"view":"VIEW_WEB_DISPLAY_LIST",
-		
-	}
-	_UXFORM.funcrion_render_alpaca(data);
-
-<?php }else{ ?>
-
-	/* standard init method */
+	<?php }else{ ?>
+		alert('render');
+		console.log(_UXFORM.data)
+		/* standard init method */
 		_UXFORM.funcrion_render_alpaca(_UXFORM.data);
 
-<?php } ?>
+	<?php } ?>
 });
 </script>
 

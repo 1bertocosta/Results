@@ -39,7 +39,7 @@ function WP_Results_forms_meta_box_callback( $post ) {
 			'render' => array( 'type' => 'wp_metabox' ),
 			'save' => array( 'save_method' => 'wp_postmeta' ),
 			'run' => 'init_post_meta_methods'			
-		);	
+		);
 		$output = $ALPC_FRM_RULEZ -> render_form( $form_args );
 		echo $output;
 	}
@@ -75,9 +75,11 @@ function display_in_post() {
 
 	function my_the_content_filter( $content ) {
 
+		$output = '';
+
 		global $post;
 		$name = 'FRM_RULEZ';	
-		$name = json_decode( urldecode( get_post_meta( $post->ID, '_alpaca-data-' . $name,  true )), true);
+		$name = json_decode( urldecode( get_post_meta( $post->ID, '_alpaca-data-' . $name,  true )), true);		
 		$name = $name['form_name'];
 
 
@@ -106,7 +108,7 @@ function display_in_post() {
 			'run' => 'init_post_meta_methods'			
 		);	
 		
-			
+		
 				
 		
 		/* recive form data */
@@ -138,20 +140,27 @@ function display_in_post() {
 				die();
 			};
 
-
 			
 			$execution = array('main_frame'=>array('input' => true, 'output' => true));			
 			$execution['main_frame']['input']  =  $data_to_process;
 			
 			$WP_EXE = new wp_executor(); 
-			$WP_EXE -> execute('main_frame', $execution);
-
+			$execution_output = $WP_EXE -> execute('main_frame', $execution);
+			
+			$output .= '<pre>';
+				$output .= '<b>Executor output:</b><br>';
+				foreach ($execution_output['main_frame']['output'] as $key => $value) {
+					
+					if($value){	
+						$output .= '<span style="color:green">action: '.$key. ' return '.$value.'</span><br>';
+					}else{
+						$output .= '<span style="color:red">action: '.$key. ' dont have result or return false</span><br>';
+					}
+				}
+			$output .= '</pre>';
 		}
 
-
-		
-		$output = $ALPC_FRM_RULEZ -> render_form($form_args);
-
+		$output .= $ALPC_FRM_RULEZ -> render_form($form_args);
 	    // Add image to the beginning of each page
 	    $content = $content.$output;
 

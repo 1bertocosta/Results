@@ -23,7 +23,7 @@ class wp_executor {
 	/* core PHP methods */
 	/* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ */
 	public function execute($frame, $args){
-		
+		//var_dump($args);
 		/* check is frame id direct or flow */
 		if(is_array ( $frame )){
 			
@@ -58,21 +58,36 @@ class wp_executor {
 			$last_callback_char = substr($key, -1);
 			if((string)(int)$last_callback_char == $last_callback_char) {
 				// last char is int [0-9]
-				$args[$frame]['output'][$key] = call_user_func_array( substr($key, 0, -1), $value );
+				$output[$key] = call_user_func_array( substr($key, 0, -1), $value );
+				//var_dump(substr($key, 0, -1),$args[$frame]['output'][$key]);
 			}else{
 				// last char is'nt int [0-9]
-				$args[$frame]['output'][$key] = call_user_func_array( $key, $value );
+				$return = call_user_func_array( $key, $value );
+				$output[$key] = $return;
+				
+				
+
+				//echo $return;
+				//echo $args[$frame]['output'][$key];
+				
+
 			}
+
+			$args[$frame]['output'] = $output;
 			
 			$this -> execute_data = $args;
 			//call_user_func(array( $UIGEN_API , $_POST['method']) , $_POST['args']);  // calback to classes methods
 		
 		}
+
+		return $args;
+		
 		/* this element should be discuss to depreciated */
 		if(is_array ( $args[$frame]['render'] ) ){
 			
 			print('RENDER ME !!!!');
 		}
+		
 	}
 	private function flow_steps($flow){
 		$flow_keys = array_keys( $flow ); 

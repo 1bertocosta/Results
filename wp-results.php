@@ -41,7 +41,8 @@ include plugin_dir_path( __FILE__ ).'inc/widget-filter-and-search.php';
 include plugin_dir_path( __FILE__ ).'inc/widget-paypal-cart.php';
 
 /* ADD CUSTOMIZE CONTROLLS TO THIS THEME */
-include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';
+//include plugin_dir_path( __FILE__ ).'inc/customize-controlls.php';
+include plugin_dir_path( __FILE__ ).'inc/customize-controls-kirki.php';
 
 /* ADD ENDPOINT REST API */
 include plugin_dir_path( __FILE__ ).'inc/rest-endpoint-api.php';
@@ -74,7 +75,7 @@ function add_parts_callback() {
 function add_forms_callback(){
 	wp_enqueue_script('jquery-ui-sortable');
 
-	wpr_reg_scripts( array( 'alpaca-core.min', 'lodash', 'lodash-deep', 'alpacajs-ux-form-editor', 'alpacajs-ux-form-editor-init' ));
+	wpr_reg_scripts( array( 'handlebars.min', 'alpaca', 'lodash', 'lodash-deep', 'alpacajs-ux-form-editor', 'alpacajs-ux-form-editor-init' ));
 	wpr_reg_styles( array('alpaca.min', 'ux-form-editor-style', 'skeleton-grid-creator', 'grid-creator' ));
 	wpr_admin_page('ux-form-builder', 'WP Results Form Builder' );
 }

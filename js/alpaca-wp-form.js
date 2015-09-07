@@ -71,7 +71,6 @@
 	}
 
 	window.init_post_meta_methods = function(){
-		
 		var el_ID = ajax_object['name'];
 		ajax_object['render']['tech_data_id'] = 'alpaca-data-'+el_ID;
 		ajax_object['data']['base'] = JSON.parse(decodeURIComponent(ajax_object['data']['base']));
@@ -92,8 +91,6 @@
 
 	function render_alpaca(el_ID){
 		/* render alpaca form */
-		console.log(ajax_object);
-		
 		var alpaca_render_options_object = {
 			"data" : ajax_object['data']['base'],			
 			"postRender": function(renderedForm) {
@@ -115,6 +112,7 @@
 				alpaca_render_options_object["options"] = data['options'];
 				alpaca_render_options_object["schema"] = data['schema'];
 				console.log(alpaca_render_options_object);
+				alert('render');
 				$( "#" + el_ID  ).alpaca(alpaca_render_options_object);
 			})					
 			.fail(function() {

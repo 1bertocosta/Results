@@ -1,0 +1,25 @@
+ {
+    "schema": {
+        "type": "array",
+        "items": {
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "title": "Key"
+                },
+                "title": {
+                    "type": "string",
+                    "title": "Title"
+                },
+                "amount": {
+                    "type": "number",
+                    "title": "Amount"
+                }
+            }
+        }
+    },
+    "options": {
+        "type": "table"
+    }
+}

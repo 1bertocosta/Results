@@ -1,9 +1,9 @@
 var _UXFORM = {};
 (function($){
 		/* short nodes references */
-		_fs = '.alpaca-fieldset';
-		_ic = '.alpaca-fieldset-item-container';
-		_ic_key = 'data-alpaca-item-container-item-key';
+		_fs = '.alpaca-field';
+		_ic = '.alpaca-container-item';
+		_ic_key = 'data-alpaca-container-item-name';
 		_dfc = 'data-first-container';
 		
 		/* ----------------------------------- */
@@ -23,7 +23,8 @@ var _UXFORM = {};
 					"type": "object",
 					"properties": {}
 				}, 
-				"view":"VIEW_WEB_DISPLAY_LIST"
+				//"view":"VIEW_WEB_DISPLAY_LIST"
+				"view": 'my-view'
 			},
 			
 			path : '',
@@ -51,6 +52,7 @@ var _UXFORM = {};
 					
 					/* sortable */
 					$( "#main_container ol" ).sortable({
+					  handle: ".helper-object-key" ,
 					  start: function( event, ui ) {
 					  	$(this).css({'background-color':'#FDFFC7', 'outline': '#FDFFC7 solid 10px'});
 
@@ -62,23 +64,41 @@ var _UXFORM = {};
 					});
 					$( "#main_container ol" ).disableSelection();
 				
-				}
-				
+				}		
+				window.update_textareas(_data['options'],_data['schema']);		
 				/* Helper function */
-				window.update_textareas(_data['options'],_data['schema']);
+				
+				Alpaca.registerView({
+					"id": "my-view",
+					"parent": "bootstrap-display",
+					"templates": {
+						"container": window.wp_result_json_path + "/form-tpl/e-container.html",
+						"control": window.wp_result_json_path + "/form-tpl/e-control.html"
+						//"container-object": "./form-tpl/e-container-object.html",
+						
+					}
+				});
+				
+				console.log(_data);
 				$("#main_container").alpaca(_data);
+
+
 			},
 			swith_fields_to_min_mode : function (control){
 				/* reference to class instance */
 				_this = this;
-				$( _ic ).each(function( index ) {
-					if(  $(this).children('fieldset').hasClass('alpaca-fieldset')  ){
+
+				//$(this).css('border:1px solid red');
+				//$(this ).html('<div class="helper-object-key">'+$(this).attr(_ic_key)+'<i class="fa fa-arrows"></i></div>');
+				//$(this).append('<div class="helper-object-properties"><i class="fa fa-cogs"></i></div> <div class="helper-object-remove"><i class="fa fa-trash"></i></div>' );
+				/*$( _ic ).each(function( index ) {
+					if(  $(this).children(_fs).hasClass('alpaca-fieldset')  ){
 						$( this ).find('legend').html('<span class="title">'+$(this).attr(_ic_key)+'</span> <span> [CONTAINER] click to add elements inside me.</span>');
 					}else{
-						$( this ).html('<div class="helper-object-key">'+$(this).attr(_ic_key)+'</div>');
+						
 					}
-					$( this ).append('<div class="helper-object-properties"><i class="fa fa-cogs"></i></div> <div class="helper-object-remove"><i class="fa fa-trash"></i></div>' )
-				});
+					
+				});*/
 			},
 			colorize_path : function(path){
 				if(path == undefined){
@@ -90,14 +110,21 @@ var _UXFORM = {};
 			},
 			/* ------------------------------------------------------ */
 			/* ELEMENT PROPERTIES FORM -------------------------------*/
-			render_field_options : function(_this){
-
+			render_field_options : function(_this, _selected){
 				// _this -> $(this)
 				var __this = this;
 				var targetPath = this.paths_helper.acctual_options_path;
 
+				//alert(targetPath);
+				
+				var elementType = _.deepGet(this.data, targetPath);
+				try { elementType = elementType['type']; }
+				catch (e) { elementType = 'text'}
+				if(elementType == undefined){elementType = 'text'}
+				
 				/* GET REST JSON from URL */
-				var jqxhr = $.getJSON( window.wp_result_json_path + "json/editor-properties-fields.json", function(data) {
+				var jqxhr = $.getJSON( window.wp_result_json_path + "json/editor-properties-fields-"+elementType+".json", function(data) {
+					
 					var tease_array = data;
 					$.each(tease_array, function( index, value ) {
 						if(value['value'] == 'key'){
@@ -106,25 +133,31 @@ var _UXFORM = {};
 						if(value['value'] == 'option-value'){
 							tease_array[index]['value'] = __this.get_option_value(targetPath+'.'+value['name']) 
 						}
+						tease_array[index]['selected_section'] = _selected;
 					});
+
 					$('.alpaca-fieldset-item-container .helper-item-details').remove();
 
-					$('#helper-container-tpl').tmpl([{}]).appendTo(_this);
+					$('#helper-container-tpl').tmpl([{'selected':_selected}]).appendTo(_this);
+					
 					
 					$(_this).css('display','none');
-					$(_this).css('opacity', 0)
+					$(_this).css('opacity', 0);
+
+					//console.log(tease_array);
 					
 					$('#helper-input-tpl').tmpl(tease_array).appendTo(_this.find('.helper-items-body'));
 
-					$('html, body').animate({
-						scrollTop: parseInt(_this.offset().top) - 20
-					}, 500);
+					/*$('html, body').animate({
+				        scrollTop: parseInt(_this.offset().top) - 20
+				    }, 500);
 					
 					$(_this).slideDown(100);
 					$(_this).animate(
 						{ opacity: 1 },
 						{ queue: false, duration: 300 }
-					);	
+					);	*/
+					$(_this).css({'opacity':'1','display':'block'});
 
 				})					
 				.fail(function() {
@@ -134,11 +167,11 @@ var _UXFORM = {};
 				/* init wordpress extentions */
 				
 				/* iam container */
-/*				if(  _this.children('fieldset').hasClass('alpaca-fieldset')  ){
+/*				if(  _this.children(_fs).hasClass('alpaca-fieldset')  ){
 					window.wordpress_autocomple_names('wp_actions');
 				}*/
 				/* iam in container */
-/*				if(_this.parents('li').children('fieldset').hasClass('alpaca-fieldset')){
+/*				if(_this.parents('li').children(_fs).hasClass('alpaca-fieldset')){
 					console.log(_this.parents('li').attr(_ic_key));
 					window.wordpress_autocomple_names(_this.parents('li').attr(_ic_key));	
 				}*/
@@ -212,12 +245,19 @@ var _UXFORM = {};
 					};
 
 					/* GET REST JSON from URL */
-					var jqxhr = $.getJSON( window.wp_result_json_path + "json/"+object_name+"-schema.json", function(data) {
-						
+					var jqxhr = $.getJSON( window.wp_result_json_path + "json/callback_"+object_name+".json", function(data) {
+						console.log(path);
 						_.deepSet(_this.data, path['schema_path'] +'.type', 'object');
 						_.deepSet(_this.data, path['schema_path'] +'.title', "Object title");
-						_.deepSet(_this.data, path['schema_path'] +'.properties', data);
+						_.deepSet(_this.data, path['schema_path'] +'.properties', data['schema']);
+
+						//_.deepSet(_this.data, path['options_path'] +'.type', 'object');
+						//_.deepSet(_this.data, path['options_path'] +'.title', "Object title");
+						_.deepSet(_this.data, path['options_path'] +'.fields', data['options']);
+						
 						_this.funcrion_render_alpaca(_this.data);
+
+
 					
 					})					
 					.fail(function() {
@@ -228,7 +268,7 @@ var _UXFORM = {};
 			create_path_to_new_element: function(element_name){
 				/* Update json data (schema) */
 				schema_path = this.paths_helper.acctual_schema_path;
-				options_path = this.paths_helper.acctual_schema_path;
+				options_path = this.paths_helper.acctual_options_path;
 				
 				if( this.selected_type == 'object' ){
 					
@@ -250,7 +290,7 @@ var _UXFORM = {};
 
 			remove_element : function( _this ){
 				/* get parent to set path on parent */
-				var parent = _this.closest('li');
+				var parent = _this.closest(_ic);
 				this.deepDelete(this.paths_helper.acctual_schema_path, this.data);
 				this.deepDelete(this.paths_helper.acctual_options_path, this.data);
 				$('#main_container').children().remove();
@@ -270,7 +310,7 @@ var _UXFORM = {};
 			// CREARTE ALPACA PATHS METHODS
 			get_paths : function(_this){
 				this.paths_helper.keys_array.push(_this.attr(_ic_key))
-				var find_parent = _this.parents('li');
+				var find_parent = _this.parents(_ic);
 				try {
 					find_parent[0]['localName']
 					this.get_paths(find_parent );
@@ -313,7 +353,7 @@ var _UXFORM = {};
 			rename_schema_key : function( _this ){
 
 				var new_name = _this.val();
-				var old_name = _this.parents('li').attr( _ic_key );
+				var old_name = _this.parents(_ic).attr( _ic_key );
 				
 				var schema_colection = this.get_parents_colection( this.paths_helper.acctual_schema_path );
 				var position = this.get_index_by_key( schema_colection, old_name );
@@ -384,4 +424,5 @@ var _UXFORM = {};
 			}
 		};
 		/* ----------------------------------- */
+/* ----------------------------------- */
 })(jQuery)
